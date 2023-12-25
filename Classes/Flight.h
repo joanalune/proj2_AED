@@ -8,9 +8,15 @@
 using namespace std;
 
 class Flight{
-private:
-    Airport origin, destination;
-    Airline airline;
+    private:
+    Airport* dest;
+    Airline* airline;
+    public:
+        Flight(Airport* d, Airline* a);
+        Airport* getDest() const;
+        Airline* getAirline() const;
+        void setDest(Airport* dest);
+
 };
 
 #endif //PROJ2_AED_FLIGHT_H
