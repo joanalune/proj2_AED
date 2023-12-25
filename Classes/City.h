@@ -10,6 +10,10 @@ class City{
 private:
     string name;
     string country;
+public:
+    City(string name, string country);
+    string getName();
+    string getCountry();
 };
 
 #endif //PROJ2_AED_CITY_H
