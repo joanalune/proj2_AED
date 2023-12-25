@@ -13,4 +13,6 @@ add_executable(proj2_AED main.cpp
         Classes/Flight.h
         Classes/Flight.cpp
         Classes/Graph.cpp
-        Classes/Graph.h)
+        Classes/Graph.h
+        Classes/FileReader.h
+        Classes/FileReader.cpp)
