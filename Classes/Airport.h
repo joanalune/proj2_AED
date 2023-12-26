@@ -13,7 +13,8 @@
 class Airport {
     string code;                // contents
     string name;
-    City city;
+    string cityName;
+    string countryName;
     double latitude;
     double longitude;
 
@@ -24,13 +25,14 @@ class Airport {
     int num;               // auxiliary field
     int low;               // auxiliary field
 
-    void addEdge(Airport *dest, double w);
+    void addFlight(Flight flight);
     bool removeEdgeTo(Airport *d);
 public:
-    Airport(string airportCode, string name, City city, double latitude, double longitude);
+    Airport(string airportCode, string name, string cityName, string countryName, double latitude, double longitude);
     string getName() const;
     string getCode() const;
-    City getCity() const;
+    string getCityName() const;
+    string getCountryName() const;
     double getLatitude() const;
     double getLongitude() const;
 
