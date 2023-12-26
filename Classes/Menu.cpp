@@ -34,11 +34,9 @@ int Menu::runMainMenu() {
             case 1:
                 runStatisticsMenu();
                 break;
-
             case 2:
                 runBestFlightsMenu();
                 break;
-
             case 3:
                 cout << "Thank you for using our Flight Management System ૮ ˶ᵔ ᵕ ᵔ˶ ა"<<endl;
                 return 0;
@@ -61,9 +59,9 @@ void Menu::statisticsMenuView() {
     cout    << "2. Number of flights out of specified airport" << endl; //also print nr of airlines
     cout    << "3. Number of flights per city/airline" << endl;
     cout    << "4. Number of different countries a specified airport/city flies to" << endl;
-    cout    << "5. Number of reachable destinations available for specified airport" << endl; //destinations being airports, cities or countries. neds to have options to select max nr of stops
+    cout    << "5. Number of reachable destinations available for specified airport" << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
     cout    << "6. Flight trips with the greatest number of stops" << endl;
-    cout    << "7. Top airports with the greatest flight capacity" << endl;
+    cout    << "7. Top X airports with the greatest flight capacity" << endl;
     cout    << "8. Essential airports for circulation capability" << endl; //articulation points
     cout    << "9. Exit" << endl;
 }
@@ -122,7 +120,7 @@ void Menu::bestFlightsMenuView() {
     cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
     cout    << endl;
     cout    << "Insert your source and destination separated by a '-''" << endl;
-    cout    << "For example: Nigeria-New York or 35.016667,-1.450000-Italy"<< endl;
+    cout    << "For example: YCB-New York,United States or 35.016667,-1.450000-La Guardia"<< endl;
     cout    << "1. Exit" << endl;
 }
 
@@ -138,7 +136,7 @@ int Menu::runBestFlightsMenu() {
             case 1:
                 return 0;
             default:
-                bestFlights();
+                printBestFlights(); //will ask for filters
         }
     }
 }
