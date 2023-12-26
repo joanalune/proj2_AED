@@ -20,9 +20,9 @@ public:
 
     void printNrAirportsFlights();
     void printNrFlightsSpecifiedAirport();
+    void printTopAirports();
 
     void waitForInput() const;
-
 };
 
 #endif //PROJ2_AED_MENU_H

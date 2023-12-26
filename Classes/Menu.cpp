@@ -106,7 +106,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 7:
-                //printTopAirports();
+                printTopAirports();
                 waitForInput();
                 break;
             case 8:
@@ -206,4 +206,11 @@ void Menu::printNrFlightsSpecifiedAirport() {
         cout << graph.getAirportTable().at(findByCode).getName() << " has " << graph.getAirportTable().at(findByCode).getOutDegree()<<
         " flights outgoing, from "<<graph.getAirportTable().at(findByCode).getNrDifferentAirlines()<<" different airlines."<<endl;
     }
+}
+
+void Menu::printTopAirports(){
+    int in;
+    cout << "Enter X:" << endl;
+    cin >> in;
+    graph.topAirports(in);
 }

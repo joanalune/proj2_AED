@@ -26,6 +26,8 @@ public:
 
     int getNumAirport() const;
     int getNumFlights() const;
+    void topAirports (int x);
+
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
     bool addFlight(const string& source, const Flight& flight);
