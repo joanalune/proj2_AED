@@ -1,6 +1,3 @@
-//
-// Created by joana on 25-12-2023.
-//
 #include "City.h"
 
 City::City(string name, string country) {

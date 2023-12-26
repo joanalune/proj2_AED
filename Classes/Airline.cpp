@@ -1,4 +1,3 @@
-
 #include "Airline.h"
 
 Airline::Airline(string code, string name, string callSign, string country): code(code), name(name), callSign(callSign), country(country) {}
