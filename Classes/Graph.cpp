@@ -41,14 +41,14 @@ bool Graph::addAirport(const Airport& airport) {
  * Returns true if successful, and false if the source or destination vertex does not exist.
  */
 
-bool Graph::addEdge(const string &source, const string &dest, const string &airlineCode) {
+bool Graph::addFlight(const string& source, const Flight& flight) {
     int sapHash = airportHash(source);
-    int dapHash = airportHash(dest);
-    int alHash = airlineHash(airlineCode);
+    int dapHash = airportHash(flight.getDestCode());
+    int alHash = airlineHash(flight.getAirlineCode());
     if (airportTable.find(sapHash) == airportTable.end() || airportTable.find(dapHash) == airportTable.end()
         || airlineTable.find(alHash) == airlineTable.end()) return false;
 
-    airportTable.at(sapHash).addFlight(Flight(dest, airlineCode));
+    airportTable.at(sapHash).addFlight(flight);
     return true;
 }
 
@@ -192,4 +192,8 @@ vector<string> Graph::bfs(const string & source) {
         }
     }
     return res;
+}
+
+void Graph::addAirline(const Airline& airline) {
+    airlineTable.insert({airlineHash(airline.getCode()), airline});
 }

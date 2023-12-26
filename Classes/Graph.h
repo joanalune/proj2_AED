@@ -19,15 +19,15 @@ class Graph {
     unordered_map<int, City> cityTable;
     unordered_map<int, Airline> airlineTable;
 
-    stack<Airport> _stack_;           // auxiliary field
 
     void dfsVisit(string apCode, vector<string> & res);
 public:
     int getNumAirport() const;
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
-    bool addEdge(const string &source, const string &dest, const string& airlineCode);
+    bool addFlight(const string& source, const Flight& flight);
     bool removeEdge(const string &sourc, const string &dest);
+    void addAirline(const Airline& airline);
     unordered_map<int, Airport> getAirportTable() const;
     vector<string> dfs();
     vector<string> dfs(const string & source);

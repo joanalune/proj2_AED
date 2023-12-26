@@ -21,9 +21,9 @@ void FileReader::readAirlines() {
         getline(linestream, callSign, ',');
         getline(linestream, country);
 
-        Airline* airline = new Airline(code, name, callSign, country);
+        Airline airline = Airline(code, name, callSign, country);
 
-        airlines.insert({}); //insert in hash table
+        graph->addAirline(airline); //insert in hash table
 
     }
     file.close();
@@ -50,11 +50,9 @@ void FileReader::readAirports() {
         getline(linestream, latitude, ',');
         getline(linestream, longitude);
 
-        City citat = City(city, country);
+        Airport airport = Airport(code, name, city, country, stod(latitude), stod(longitude));
 
-        //Airport *airport = new Airport(code, name, citat, latitude, longitude);
-
-        airports.insert({}); //insert in hash table
+        graph->addAirport(airport); //insert in hash table
 
     }
     file.close();
@@ -78,7 +76,7 @@ void FileReader::readFlights() {
         getline(linestream, target, ',');
         getline(linestream, airline);
 
-        //addvertex(source,target,airline)
+        graph->addFlight(source, Flight(target, airline));
 
     }
     file.close();
