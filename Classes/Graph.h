@@ -20,12 +20,9 @@ class Graph {
     unordered_map<int, Airline> airlineTable;
 
     vector<string> airportCodeSet;      // vertex set
-    int _index_;                        // auxiliary field
     stack<Airport> _stack_;           // auxiliary field
-    list<list<string>> _list_sccs_;        // auxiliary field
 
     void dfsVisit(Airport *v, vector<string> & res) const;
-    bool dfsIsDAG(Airport *v) const;
 public:
     int getNumAirport() const;
     bool addAirport(const string &airportCode);
@@ -36,14 +33,9 @@ public:
     vector<string> dfs() const;
     vector<string> dfs(const string & source) const;
     vector<string> bfs(const string &source) const;
-    vector<string> topsort() const;
-    bool isDAG() const;
 
     int airportHash(const string& airportCode);
 };
-
-/****************** Provided constructors and functions ********************/
-
 
 int Graph::getNumAirport() const {
     return airportCodeSet.size();
@@ -222,97 +214,5 @@ vector<string> Graph::bfs(const string & source) const {
     }
     return res;
 }
-
-
-/****************** isDAG  ********************/
-/*
- * Performs a depth-first search in a graph (this), to determine if the graph
- * is acyclic (acyclic directed graph or DAG).
- * During the search, a cycle is found if an edge connects to a vertex
- * that is being processed in the stack of recursive calls (see theoretical classes).
- * Returns true if the graph is acyclic, and false otherwise.
- */
-
-
-bool Graph::isDAG() const {
-    for (auto v : vertexSet) {
-        v->visited = false;
-        v->processing = false;
-    }
-    for (auto v : vertexSet)
-        if (! v->visited)
-            if ( ! dfsIsDAG(v) )
-                return false;
-    return true;
-}
-
-/**
- * Auxiliary function that visits a vertex (v) and its adjacent, recursively.
- * Returns false (not acyclic) if an edge to a vertex in the stack is found.
- */
-
-bool Graph::dfsIsDAG(Airport *v) const {
-    v->visited = true;
-    v->processing = true;
-    for (auto & e : v->adj) {
-        auto w = e.dest;
-        if (w->processing)
-            return false;
-        if (! w->visited)
-            if (! dfsIsDAG(w))
-                return false;
-    }
-    v->processing = false;
-    return true;
-}
-
-
-/****************** toposort ********************/
-
-
-vector<string> Graph::topsort() const {
-    vector<string> res;
-
-    //calculate in degree
-    for (Airport* v : vertexSet) {
-        v->setIndegree(0);
-    }
-    for (Airport* v : vertexSet) {
-        for (Flight e : v->getAdj()) {
-            e.dest->indegree++;
-        }
-    }
-
-    queue<Airport*> toCheck; //holds all vertexes that "come next" (will change according to dynamic in degree)
-
-    for (Airport* vertex : vertexSet) {
-
-        if (vertex->getIndegree() == 0) {
-            toCheck.push(vertex);
-        }
-    }
-
-    while (!toCheck.empty()) {
-        Airport* checkingV = toCheck.front();
-        toCheck.pop();
-
-        res.push_back(checkingV->getAirport());
-
-        for (Flight adjEdge : checkingV->getAdj()) {
-            adjEdge.getDest()->indegree--;
-
-            if (adjEdge.getDest()->getIndegree() == 0) {
-                toCheck.push(adjEdge.getDest());
-            }
-        }
-    }
-
-    if (res.size() != vertexSet.size()) {  //graph has a cycle
-        res.clear();
-    }
-
-
-    return res;
-};
 
 #endif //PROJ2_AED_GRAPH_H
