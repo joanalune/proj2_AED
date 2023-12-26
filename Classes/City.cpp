@@ -3,9 +3,7 @@
 //
 #include "City.h"
 
-City::City(string name, string country) {
-
-}
+City::City(string name, string country): name(name), country(country) {}
 
 string City::getName() {
     return name;
