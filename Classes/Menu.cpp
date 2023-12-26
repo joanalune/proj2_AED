@@ -154,7 +154,7 @@ void Menu::bestFlightsMenuView() {
 int Menu::runBestFlightsMenu() {
     while (true) {
         system("clear");
-        mainMenuView();
+        bestFlightsMenuView();
 
         int option;
         cin >> option;
