@@ -9,8 +9,10 @@ class Airline{
 private:
     string code;
     string name;
-    string callsign;
+    string callSign;
     string country;
+public:
+    Airline(string code, string name, string callSign, string country)
 
 };
 
