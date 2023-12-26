@@ -21,7 +21,7 @@ class Airport {
     vector<Flight> flights;  // list of outgoing flights
     bool visited;          // auxiliary field
     bool processing;       // auxiliary field
-    int indegree;          // auxiliary field
+    int inDegree;          // auxiliary field
     int num;               // auxiliary field
     int low;               // auxiliary field
 
@@ -46,9 +46,11 @@ public:
     void setProcessing(bool p);
     const vector<Flight> &getFlights() const;
 
-    int getIndegree() const;
+    int getInDegree() const;
+    int getOutDegree() const;
+    int getNrDifferentAirlines() const;
 
-    void setIndegree(int indegree);
+    void setInDegree(int indegree);
 
     int getNum() const;
 
