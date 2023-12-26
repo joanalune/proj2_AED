@@ -1,6 +1,8 @@
 #include <iostream>
+#include "Classes/Menu.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Menu menu = Menu();
+    menu.runMainMenu();
     return 0;
 }

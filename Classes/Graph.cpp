@@ -5,6 +5,12 @@
 
 #include "Graph.h"
 
+Graph::Graph() {
+    airportTable = {};
+    airlineTable = {};
+    cityTable = {};
+}
+
 int Graph::getNumAirport() const {
     return airportTable.size();
 }
@@ -196,4 +202,27 @@ vector<string> Graph::bfs(const string & source) {
 
 void Graph::addAirline(const Airline& airline) {
     airlineTable.insert({airlineHash(airline.getCode()), airline});
+}
+
+int Graph::airportHash(const string &code) {
+    hash<string> hash;
+    return hash(code);
+}
+
+int Graph::cityHash(const string &name, const string &country) {
+    hash<string> hash;
+    return hash(name + country);
+}
+
+int Graph::airlineHash(const string &code) {
+    hash<string> hash;
+    return hash(code);
+}
+
+unordered_map<int, Airline> Graph::getAirlineTable() const {
+    return airlineTable;
+}
+
+unordered_map<int, City> Graph::getCityTable() const {
+    return cityTable;
 }

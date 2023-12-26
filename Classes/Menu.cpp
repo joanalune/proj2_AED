@@ -3,6 +3,14 @@
 
 using namespace std;
 
+Menu::Menu() {
+    graph = Graph();
+    FileReader fileReader = FileReader(&graph);
+    fileReader.readAirlines();
+    fileReader.readAirports();
+    fileReader.readFlights();
+}
+
 void Menu::waitForInput() const {
     cout << "Input any value to continue" << endl;
     string input;
@@ -74,39 +82,58 @@ int Menu::runStatisticsMenu() {
         cin>>option;
         switch (option){
             case 1:
-                printNrAirportsFlights();
+                //printNrAirportsFlights();
                 waitForInput();
                 break;
             case 2:
-                printNrFlightsSpecifiedAirport();
+                //printNrFlightsSpecifiedAirport();
                 waitForInput();
                 break;
             case 3:
-                printNrFlightsPerCityAirline();
+                //printNrFlightsPerCityAirline();
                 waitForInput();
                 break;
             case 4:
-                printNrDifferentCountries();
+                //printNrDifferentCountries();
                 waitForInput();
                 break;
             case 5:
-                printNrDestinationsAirport();
+                //printNrDestinationsAirport();
                 waitForInput();
                 break;
             case 6:
-                printGreatestNumberStops();
+                //printGreatestNumberStops();
                 waitForInput();
                 break;
             case 7:
-                printTopAirports();
+                //printTopAirports();
                 waitForInput();
                 break;
             case 8:
-                printEssentialAirports();
+                //printEssentialAirports();
                 waitForInput();
                 break;
             case 9:
                 return 0;
+            case 10:
+                /*
+                for (auto a : graph.getAirportTable()) {
+                    cout << '\n' << a.second.getCode()  << "  " << a.second.getName() << "  " << a.second.getCountryName() << ',' << a.second.getCityName();
+                }
+                cout << '\n' << graph.getNumAirport();
+                */
+                /*
+                for (auto a : graph.getCityTable()) {
+                    cout << '\n' << a.second.getCountry() << ',' << a.second.getName() << "  " << a.second.getAirportCodes().size();
+                }
+                cout << '\n' << graph.getCityTable().size() << '\n';
+                */
+                /*
+                for (auto a : graph.getAirlineTable()) {
+                    cout << '\n' << a.second.getCode() << "  " << a.second.getCallSign() << "  " << a.second.getName() << "  " << a.second.getCountry();
+                }
+                cout << '\n' << graph.getAirlineTable().size() << '\n';
+                */
             default:
                 cout<<"Invalid input";
         }
@@ -136,7 +163,9 @@ int Menu::runBestFlightsMenu() {
             case 1:
                 return 0;
             default:
-                printBestFlights(); //will ask for filters
+                //printBestFlights(); //will ask for filters
+                waitForInput();
+                break;
         }
     }
 }

@@ -22,6 +22,8 @@ class Graph {
 
     void dfsVisit(string apCode, vector<string> & res);
 public:
+    Graph();
+
     int getNumAirport() const;
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
@@ -29,6 +31,8 @@ public:
     bool removeEdge(const string &sourc, const string &dest);
     void addAirline(const Airline& airline);
     unordered_map<int, Airport> getAirportTable() const;
+    unordered_map<int, City> getCityTable() const;
+    unordered_map<int, Airline> getAirlineTable() const;
     vector<string> dfs();
     vector<string> dfs(const string & source);
     vector<string> bfs(const string &source);

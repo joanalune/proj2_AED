@@ -45,7 +45,6 @@ public:
     bool isProcessing() const;
     void setProcessing(bool p);
     const vector<Flight> &getFlights() const;
-    void setAdj(const vector<Flight> &adj);
 
     int getIndegree() const;
 

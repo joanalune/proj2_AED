@@ -73,4 +73,28 @@ const vector<Flight> &Airport::getFlights() const {
     return flights;
 }
 
+void Airport::addFlight(Flight flight) {
+    flights.push_back(flight);
+}
+
+string Airport::getName() const {
+    return name;
+}
+
+string Airport::getCityName() const {
+    return cityName;
+}
+
+string Airport::getCountryName() const {
+    return countryName;
+}
+
+double Airport::getLatitude() const {
+    return latitude;
+}
+
+double Airport::getLongitude() const {
+    return longitude;
+}
+
 

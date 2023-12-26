@@ -3,6 +3,7 @@
 #define PROJ2_AED_CITY_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
