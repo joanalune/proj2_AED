@@ -25,6 +25,7 @@ public:
     Graph();
 
     int getNumAirport() const;
+    int getNumFlights() const;
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
     bool addFlight(const string& source, const Flight& flight);
@@ -36,6 +37,7 @@ public:
     vector<string> dfs();
     vector<string> dfs(const string & source);
     vector<string> bfs(const string &source);
+
 
     int airportHash(const string& code);
     int cityHash(const string& name, const string& country);

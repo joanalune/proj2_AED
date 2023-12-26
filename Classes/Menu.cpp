@@ -82,7 +82,7 @@ int Menu::runStatisticsMenu() {
         cin>>option;
         switch (option){
             case 1:
-                //printNrAirportsFlights();
+                printNrAirportsFlights();
                 waitForInput();
                 break;
             case 2:
@@ -168,4 +168,24 @@ int Menu::runBestFlightsMenu() {
                 break;
         }
     }
+}
+
+void Menu::printNrAirportsFlights() {
+    cout    << "1. Global number of airports" << endl;
+    cout    << "2. Global number of flights" << endl;
+
+    int option;
+    cin >> option;
+
+    switch (option) {
+        case 1:
+            cout << "The global number of airports is: " << graph.getNumAirport() << endl;
+            break;
+        case 2:
+            cout << "The global number of flights is: " << graph.getNumFlights() << endl;
+            break;
+        default:
+            cout << "Invalid input" << endl;
+        }
+
 }

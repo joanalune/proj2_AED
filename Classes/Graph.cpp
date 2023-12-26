@@ -15,6 +15,14 @@ int Graph::getNumAirport() const {
     return airportTable.size();
 }
 
+int Graph::getNumFlights() const {
+    int res = 0;
+    for(auto a: airportTable){
+        res += a.second.getFlights().size();
+    }
+    return res;
+}
+
 
 unordered_map<int, Airport> Graph::getAirportTable() const {
     return airportTable;

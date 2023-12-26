@@ -18,6 +18,8 @@ public:
     int runStatisticsMenu();
     int runBestFlightsMenu();
 
+    void printNrAirportsFlights();
+
     void waitForInput() const;
 
 };
