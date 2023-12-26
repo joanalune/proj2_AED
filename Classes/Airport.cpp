@@ -1,7 +1,4 @@
-//
-// Created by ebaltazar on 25-12-2023.
-//
-
+#include <set>
 #include "Airport.h"
 
 
@@ -34,13 +31,13 @@ bool Airport::isVisited() const {
 }
 
 
-int Airport::getIndegree() const {
-    return indegree;
+int Airport::getInDegree() const {
+    return inDegree;
 }
 
 
-void Airport::setIndegree(int indegree) {
-    Airport::indegree = indegree;
+void Airport::setInDegree(int inDegree) {
+    Airport::inDegree = inDegree;
 }
 
 
@@ -95,6 +92,20 @@ double Airport::getLatitude() const {
 
 double Airport::getLongitude() const {
     return longitude;
+}
+
+int Airport::getOutDegree() const {
+    return flights.size();
+}
+
+int Airport::getNrDifferentAirlines() const {
+    set<string> airlines;
+
+    for(auto a: flights){
+        airlines.insert(a.getAirlineCode());
+    }
+
+    return airlines.size();
 }
 
 

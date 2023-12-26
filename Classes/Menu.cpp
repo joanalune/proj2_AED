@@ -86,7 +86,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 2:
-                //printNrFlightsSpecifiedAirport();
+                printNrFlightsSpecifiedAirport();
                 waitForInput();
                 break;
             case 3:
@@ -154,7 +154,7 @@ void Menu::bestFlightsMenuView() {
 int Menu::runBestFlightsMenu() {
     while (true) {
         system("clear");
-        mainMenuView();
+        bestFlightsMenuView();
 
         int option;
         cin >> option;
@@ -171,21 +171,39 @@ int Menu::runBestFlightsMenu() {
 }
 
 void Menu::printNrAirportsFlights() {
-    cout    << "1. Global number of airports" << endl;
-    cout    << "2. Global number of flights" << endl;
+    cout << "1. Global number of airports" << endl;
+    cout << "2. Global number of flights" << endl;
 
     int option;
     cin >> option;
 
     switch (option) {
         case 1:
-            cout << "The global number of airports is: " << graph.getNumAirport() << endl;
+            cout << "The global number of airports is " << graph.getNumAirport() << endl;
             break;
         case 2:
-            cout << "The global number of flights is: " << graph.getNumFlights() << endl;
+            cout << "The global number of flights is " << graph.getNumFlights() << endl;
             break;
         default:
             cout << "Invalid input" << endl;
         }
 
+}
+
+void Menu::printNrFlightsSpecifiedAirport() {
+    cout << "Enter airport code: " << endl;
+
+    string airportCode;
+    cin >> airportCode;
+
+    auto findByCode = graph.airportHash(airportCode);
+
+    if(graph.getAirportTable().find(findByCode) == graph.getAirportTable().end()){
+        cout << "Airport not found!"<<endl;
+    }
+
+    else{
+        cout << graph.getAirportTable().at(findByCode).getName() << " has " << graph.getAirportTable().at(findByCode).getOutDegree()<<
+        " flights outgoing, from "<<graph.getAirportTable().at(findByCode).getNrDifferentAirlines()<<" different airlines."<<endl;
+    }
 }

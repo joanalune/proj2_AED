@@ -19,6 +19,7 @@ public:
     int runBestFlightsMenu();
 
     void printNrAirportsFlights();
+    void printNrFlightsSpecifiedAirport();
 
     void waitForInput() const;
 
