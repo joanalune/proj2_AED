@@ -4,8 +4,6 @@ project(proj2_AED)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(proj2_AED main.cpp
-        Classes/Airport.h
-        Classes/Airport.cpp
         Classes/City.cpp
         Classes/City.h
         Classes/Airline.h
@@ -13,4 +11,6 @@ add_executable(proj2_AED main.cpp
         Classes/Flight.h
         Classes/Flight.cpp
         Classes/Graph.cpp
-        Classes/Graph.h)
+        Classes/Graph.h
+        Classes/Airport.cpp
+        Classes/Airport.h)

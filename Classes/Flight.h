@@ -2,20 +2,19 @@
 #define PROJ2_AED_FLIGHT_H
 
 #include "string"
-#include "Airport.h"
 #include "Airline.h"
 
 using namespace std;
 
 class Flight{
     private:
-    Airport* dest;
-    Airline* airline;
+    string destCode;
+    string airlineCode;
     public:
-        Flight(Airport* d, Airline* a);
-        Airport* getDest() const;
-        Airline* getAirline() const;
-        void setDest(Airport* dest);
+        Flight(string d, string a);
+        string getDestCode() const;
+        string getAirlineCode() const;
+        void setDest(string dest);
 
 };
 

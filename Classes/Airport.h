@@ -1,47 +1,64 @@
+//
+// Created by ebaltazar on 25-12-2023.
+//
+
 #ifndef PROJ2_AED_AIRPORT_H
 #define PROJ2_AED_AIRPORT_H
 
+
 #include <vector>
-#include "string"
 #include "City.h"
 #include "Flight.h"
 
-using namespace std;
-
-class Airport{
-private:
-    string code;
+class Airport {
+    string code;                // contents
     string name;
     City city;
     double latitude;
     double longitude;
 
-    vector<Flight> flights;  // list of outgoing edges
-    bool visited;
-    bool processing;
+    vector<Flight> flights;  // list of outgoing flights
+    bool visited;          // auxiliary field
+    bool processing;       // auxiliary field
+    int indegree;          // auxiliary field
+    int num;               // auxiliary field
+    int low;               // auxiliary field
 
-    void addEdge(Airport *dest, double latitude, double longitude);
-    bool removeEdgeTo(Airport *dest);
+    void addEdge(Airport *dest, double w);
+    bool removeEdgeTo(Airport *d);
 public:
-    Airport(string code, string name, City city, double latitude, double longitude);
-
+    Airport(string airportCode, string name, City city, double latitude, double longitude);
     string getName() const;
     string getCode() const;
     City getCity() const;
     double getLatitude() const;
     double getLongitude() const;
-    const vector<Flight> &getFlightsOut() const;
 
-    void setCode(string code);
-    void setName(string name);
-    void setCity(City city);
-    void setFlightsOut(const vector<Flight> &adj);
+    void setCode(const string &code);
+    void setName(const string &name);
+    void setCity(const City &city);
 
     bool isVisited() const;
     void setVisited(bool v);
     bool isProcessing() const;
     void setProcessing(bool p);
+    const vector<Flight> &getFlights() const;
+    void setAdj(const vector<Flight> &adj);
 
+    int getIndegree() const;
+
+    void setIndegree(int indegree);
+
+    int getNum() const;
+
+    void setNum(int num);
+
+    int getLow() const;
+
+    void setLow(int low);
+
+    friend class Graph;
 };
+
 
 #endif //PROJ2_AED_AIRPORT_H
