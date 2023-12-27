@@ -205,6 +205,42 @@ vector<string> Graph::bfs(const string & source) {
     return res;
 }
 
+vector<string> Graph::farthestAirportsFrom(const string& source, int& stops) {
+    vector<string> farthest;
+
+    queue<string> q;
+    for (auto& v : airportTable)
+        v.second.setVisited(false);
+
+    q.push(source);
+    airportTable.at(airportHash(source)).setVisited(true);
+
+    stops = 0;
+    int qSize;
+
+    while (!q.empty()) {
+        qSize = q.size();
+        farthest.clear();
+
+        for (int i = 0; i < qSize; i++) {
+            auto a = q.front();
+            q.pop();
+            farthest.push_back(a);
+
+            for (auto &e: airportTable.at(airportHash(a)).getFlights()) {
+                string dest = e.getDestCode();
+                if (!airportTable.at(airportHash(dest)).isVisited()) {
+                    q.push(dest);
+                    airportTable.at(airportHash(dest)).setVisited(true);
+                }
+            }
+        }
+        stops++;
+    }
+    stops--;
+    return farthest;
+}
+
 void Graph::addAirline(const Airline& airline) {
     airlineTable.insert({airlineHash(airline.getCode()), airline});
 }
@@ -253,4 +289,23 @@ void Graph::topAirports(int x) {
         cout << count <<". "<< a.getName() <<": "<< a.getFlights().size() <<" flights." << endl;
     }
 
+}
+
+vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a vector with pairs (source, destination) of graph diameter and places diameter in diameter
+    vector<pair<string, string>> res;
+    int stops = 0;
+    int maxStops = 0;
+
+    for (auto a : airportTable) {
+        vector<string> farthest = farthestAirportsFrom(a.second.getCode(), stops);
+        if (stops < maxStops) continue;
+        if (stops > maxStops) res.clear();
+        maxStops = stops;
+        for (const string& dest : farthest) {
+            res.emplace_back(a.second.getCode(), dest);
+        }
+
+    }
+    diameter = maxStops;
+    return res;
 }

@@ -26,6 +26,8 @@ public:
 
     int getNumAirport() const;
     int getNumFlights() const;
+    vector<pair<string, string>> getMaximumTrip(int &diameter);
+    vector<string> farthestAirportsFrom(const string& source, int &stops);
     void topAirports (int x);
 
     bool addAirport(const Airport& airport);
@@ -44,6 +46,7 @@ public:
     int airportHash(const string& code);
     int cityHash(const string& name, const string& country);
     int airlineHash(const string& code);
+
 };
 
 

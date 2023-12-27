@@ -21,6 +21,7 @@ public:
     void printNrAirportsFlights();
     void printNrFlightsSpecifiedAirport();
     void printTopAirports();
+    void printGreatestNumberStops();
 
     void waitForInput() const;
 };
