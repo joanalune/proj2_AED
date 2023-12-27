@@ -157,12 +157,12 @@ int Menu::runBestFlightsMenu() {
 
             case 2:
                 cout << "Please insert the source airport name:" << endl;
-                cin >> source;
+                getline(std::cin >> std::ws, source);
                 mode = "name";
                 break;
             case 3:
                 cout << "Please insert the source city and country in the format city,country:" << endl;
-                cin >> source;
+                getline(std::cin >> std::ws, source);
                 mode = "city";
                 break;
             case 4:
@@ -183,6 +183,13 @@ int Menu::runBestFlightsMenu() {
             cout << "Airports not found for source input!" << endl;
             waitForInput();
             return 0;
+        }
+        else{
+            cout << "Airports to consider for source input: ";
+            for(string code : sourceAirports){
+                cout << code << ",";
+            }
+            cout << endl;
         }
 
         //destiny selection menu
@@ -206,12 +213,12 @@ int Menu::runBestFlightsMenu() {
 
             case 2:
                 cout << "Please insert the source airport name:" << endl;
-                cin >> dest;
+                getline(std::cin >> std::ws, dest);
                 mode = "name";
                 break;
             case 3:
                 cout << "Please insert the source city and country in the format city,country:" << endl;
-                cin >> dest;
+                getline(std::cin >> std::ws, dest);
                 mode = "city";
                 break;
             case 4:
@@ -232,6 +239,13 @@ int Menu::runBestFlightsMenu() {
             cout << "Airports not found for destination input!" << endl;
             waitForInput();
             return 0;
+        }
+        else{
+            cout << "Airports to consider for destination input: ";
+            for(string code : destAirports){
+                cout << code << ",";
+            }
+            cout << endl;
         }
 
         runBestFlightsFiltersMenu();
