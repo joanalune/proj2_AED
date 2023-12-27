@@ -23,6 +23,7 @@ public:
     void printNrAirportsFlights();
     void printNrFlightsSpecifiedAirport();
     void printTopAirports();
+    void printGreatestNumberStops();
     void printEssentialAirports();
 
     void waitForInput() const;

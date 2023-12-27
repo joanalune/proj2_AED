@@ -104,7 +104,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 6:
-                //printGreatestNumberStops();
+                printGreatestNumberStops();
                 waitForInput();
                 break;
             case 7:
@@ -345,6 +345,19 @@ void Menu::printTopAirports(){
 
 }
 
+void Menu::printGreatestNumberStops() {
+    int diameter;
+    vector<pair<string, string>> diameterTrips = graph.getMaximumTrip(diameter);
+
+    cout << "The trips with the greatest number of stops are:";
+    for (auto pair : diameterTrips) {
+        string s = graph.getAirportTable().at(graph.airportHash(pair.first)).getCode();
+        string d = graph.getAirportTable().at(graph.airportHash(pair.second)).getCode();
+        cout << '\n' << s << "  TO  " << d;
+    }
+    cout << "\nNumber of stops:  " << diameter << '\n';
+}
+
 void Menu::printEssentialAirports(){
     unordered_set<string> res;
     res = graph.essentialAirports();
@@ -356,9 +369,3 @@ void Menu::printEssentialAirports(){
     }
 }
 
-void Menu::printBestFlights(string &source, string &dest){
-
-
-    cout << "Would you like to apply any filters?";
-
-}

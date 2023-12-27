@@ -28,6 +28,8 @@ public:
 
     int getNumAirport() const;
     int getNumFlights() const;
+    vector<pair<string, string>> getMaximumTrip(int &diameter);
+    vector<string> farthestAirportsFrom(const string& source, int &stops);
     set<Airport> topAirports ();
     unordered_set<string> essentialAirports();
     vector<string> getAirportCode(string &input,string& mode);
