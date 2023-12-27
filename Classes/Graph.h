@@ -8,9 +8,10 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <set>
 #include <list>
 #include <unordered_map>
-#include<unordered_set>
+#include <unordered_set>
 
 using namespace std;
 
@@ -27,7 +28,7 @@ public:
 
     int getNumAirport() const;
     int getNumFlights() const;
-    void topAirports (int x);
+    set<Airport> topAirports ();
     unordered_set<string> essentialAirports();
 
     bool addAirport(const Airport& airport);

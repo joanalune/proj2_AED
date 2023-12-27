@@ -233,27 +233,16 @@ unordered_map<int, City> Graph::getCityTable() const {
     return cityTable;
 }
 
-void Graph::topAirports(int x) {
+set<Airport> Graph::topAirports() {
     int count = 0;
 
-    auto cmp= [](Airport a, Airport b){ return a.getFlights().size() > b.getFlights().size();};//O(log n) * O(n) + O(n)
-    set<Airport, decltype(cmp)> orderedAirports(cmp);
+    set<Airport> orderedAirports;
 
     for(auto a : airportTable){
         orderedAirports.insert(a.second);
     }
 
-    if(x >= airportTable.size() || x <=0 || (x>='a' && x<='z') || (x>='A' && x<='Z')){
-        cout << "Invalid input"<<endl;
-        return;
-    }
-
-    for(auto a : orderedAirports){
-        if(count == x){break;}
-        count++;
-        cout << count <<". "<< a.getName() <<": "<< a.getFlights().size() <<" flights." << endl;
-    }
-
+    return orderedAirports;
 }
 
 unordered_set<string> Graph::essentialAirports() {
