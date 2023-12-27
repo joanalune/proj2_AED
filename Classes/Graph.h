@@ -46,6 +46,8 @@ public:
     vector<string> dfs(const string & source);
     vector<string> bfs(const string &source);
 
+    double calculateDistance(double lat1, double lon1, double lat2, double lon2);
+
 
     int airportHash(const string& code);
     int cityHash(const string& name, const string& country);

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <sstream>
+#include <cmath>
 #include "Graph.h"
 
 Graph::Graph() {
@@ -380,8 +381,19 @@ vector<string> Graph::getAirportCode(string &input, string& mode) {
         getline(ss, lat, ',');
         getline(ss, longi);
 
-        //ver quais sao aeroportos mais perto e fazer push back.
+        double minDistance = std::numeric_limits<double>::max();
 
+        for (const auto& a : airportTable) {
+            double distance = calculateDistance(stod(lat), stod(longi), a.second.getLatitude(), a.second.getLongitude());
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                res.clear();
+                res.push_back(a.second.code);
+            } else if (distance == minDistance) {
+                res.push_back(a.second.code);
+            }
+        }
     }
 
 }
@@ -403,4 +415,20 @@ vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a 
     }
     diameter = maxStops;
     return res;
+}
+
+double Graph::calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double radiusOfEarth = 6371.0;
+
+    double dLat = (lat2 - lat1) * (M_PI / 180.0);
+    double dLon = (lon2 - lon1) * (M_PI / 180.0);
+
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+               cos(lat1 * (M_PI / 180.0)) * cos(lat2 * (M_PI / 180.0)) *
+               sin(dLon / 2) * sin(dLon / 2);
+
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    double distance = radiusOfEarth * c;
+
+    return distance;
 }

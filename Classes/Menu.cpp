@@ -134,7 +134,7 @@ void Menu::bestFlightsMenuView() {
     cout    << "1. Airport Code" << endl;
     cout    << "2. Airport Name" << endl;
     cout    << "3. City and country" << endl;
-    cout    << "4.Coordinates" << endl;
+    cout    << "4. Coordinates" << endl;
     cout    << "5. Exit" << endl;
 }
 
@@ -191,7 +191,7 @@ int Menu::runBestFlightsMenu() {
         cout    << "1. Airport Code" << endl;
         cout    << "2. Airport Name" << endl;
         cout    << "3. City and country" << endl;
-        cout    << "4.Coordinates" << endl;
+        cout    << "4. Coordinates" << endl;
         cout    << "5. Exit" << endl;
 
         int option2;
