@@ -187,7 +187,7 @@ int Menu::runBestFlightsMenu() {
         else{
             cout << "Airports to consider for source input: ";
             for(string code : sourceAirports){
-                cout << code << ",";
+                cout << code << " ";
             }
             cout << endl;
         }
@@ -243,7 +243,7 @@ int Menu::runBestFlightsMenu() {
         else{
             cout << "Airports to consider for destination input: ";
             for(string code : destAirports){
-                cout << code << ",";
+                cout << code << " ";
             }
             cout << endl;
         }
