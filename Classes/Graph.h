@@ -8,8 +8,10 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <set>
 #include <list>
 #include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -28,7 +30,8 @@ public:
     int getNumFlights() const;
     vector<pair<string, string>> getMaximumTrip(int &diameter);
     vector<string> farthestAirportsFrom(const string& source, int &stops);
-    void topAirports (int x);
+    set<Airport> topAirports ();
+    unordered_set<string> essentialAirports();
 
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
@@ -47,6 +50,7 @@ public:
     int cityHash(const string& name, const string& country);
     int airlineHash(const string& code);
 
+    void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
 };
 
 

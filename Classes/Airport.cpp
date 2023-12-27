@@ -108,4 +108,6 @@ int Airport::getNrDifferentAirlines() const {
     return airlines.size();
 }
 
-
+bool Airport::operator<(Airport b) const{
+    return this->flights.size() > b.flights.size();
+}

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <unordered_set>
+#include <set>
 #include "Menu.h"
 
 using namespace std;
@@ -46,7 +48,7 @@ int Menu::runMainMenu() {
                 runBestFlightsMenu();
                 break;
             case 3:
-                cout << "Thank you for using our Flight Management System ૮ ˶ᵔ ᵕ ᵔ˶ ა"<<endl;
+                cout << "Thank you for using our Flight Management System (˶ᵔ ᵕ ᵔ˶)"<<endl;
                 return 0;
 
             default:
@@ -110,7 +112,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 8:
-                //printEssentialAirports();
+                printEssentialAirports();
                 waitForInput();
                 break;
             case 9:
@@ -212,7 +214,24 @@ void Menu::printTopAirports(){
     int in;
     cout << "Enter X:" << endl;
     cin >> in;
-    graph.topAirports(in);
+
+    int count =0;
+
+    auto x = graph.topAirports();
+
+
+    if(in >= graph.getAirportTable().size() || in <=0){
+        cout << "Invalid input" << endl;
+    }
+
+    else{
+        for(auto a : x){
+            if(count == in){break;}
+            count++;
+            cout << count << ". "<< a.getName() << ": "<< a.getFlights().size() << " flights." << endl;
+        }
+    }
+
 }
 
 void Menu::printGreatestNumberStops() {
@@ -227,3 +246,16 @@ void Menu::printGreatestNumberStops() {
     }
     cout << "\nNumber of stops:  " << diameter << '\n';
 }
+
+void Menu::printEssentialAirports(){
+    unordered_set<string> res;
+    res = graph.essentialAirports();
+
+    cout << "The essential airports "<< '(' << res.size() <<')'<<" are: " << endl;
+
+    for(auto a : res){
+        cout << a<< endl;
+    }
+
+}
+

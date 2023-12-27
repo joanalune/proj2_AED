@@ -45,16 +45,14 @@ public:
     int getInDegree() const;
     int getOutDegree() const;
     int getNrDifferentAirlines() const;
-
     void setInDegree(int indegree);
 
     int getNum() const;
-
     void setNum(int num);
-
     int getLow() const;
-
     void setLow(int low);
+
+    bool operator<(Airport b) const;
 
     friend class Graph;
 };
