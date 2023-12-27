@@ -148,7 +148,7 @@ void Menu::bestFlightsMenuView() {
     cout    << "            Best Flight Option          " << endl;
     cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
     cout    << endl;
-    cout    << "Insert your source and destination separated by a '-''" << endl;
+    cout    << "Insert your source and destination separated by a '>'." << endl;
     cout    << "For example: YCB-New York,United States or 35.016667,-1.450000-La Guardia"<< endl;
     cout    << "1. Exit" << endl;
 }
