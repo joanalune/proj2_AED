@@ -10,6 +10,7 @@
 #include <stack>
 #include <list>
 #include <unordered_map>
+#include<unordered_set>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
     int getNumAirport() const;
     int getNumFlights() const;
     void topAirports (int x);
+    unordered_set<string> essentialAirports();
 
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
@@ -44,6 +46,8 @@ public:
     int airportHash(const string& code);
     int cityHash(const string& name, const string& country);
     int airlineHash(const string& code);
+
+    void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
 };
 
 

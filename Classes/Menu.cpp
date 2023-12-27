@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_set>
 #include "Menu.h"
 
 using namespace std;
@@ -110,7 +111,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 8:
-                //printEssentialAirports();
+                printEssentialAirports();
                 waitForInput();
                 break;
             case 9:
@@ -214,3 +215,16 @@ void Menu::printTopAirports(){
     cin >> in;
     graph.topAirports(in);
 }
+
+void Menu::printEssentialAirports(){
+    unordered_set<string> res;
+    res = graph.essentialAirports();
+
+    cout << "The essential airports "<< '(' << res.size() <<')'<<" are: " << endl;
+
+    for(auto a : res){
+        cout << a<< endl;
+    }
+
+}
+

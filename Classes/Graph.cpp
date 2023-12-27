@@ -1,5 +1,6 @@
 #include <set>
 #include <iostream>
+#include <unordered_set>
 #include "Graph.h"
 
 Graph::Graph() {
@@ -242,7 +243,7 @@ void Graph::topAirports(int x) {
         orderedAirports.insert(a.second);
     }
 
-    if(x >= airportTable.size() || x <=0 || (x>='a'&& x<='z') || (x>='A'&& x<='Z')){
+    if(x >= airportTable.size() || x <=0 || (x>='a' && x<='z') || (x>='A' && x<='Z')){
         cout << "Invalid input"<<endl;
         return;
     }
@@ -251,6 +252,56 @@ void Graph::topAirports(int x) {
         if(count == x){break;}
         count++;
         cout << count <<". "<< a.getName() <<": "<< a.getFlights().size() <<" flights." << endl;
+    }
+
+}
+
+unordered_set<string> Graph::essentialAirports() {
+    unordered_set<string> res;
+    int index=1;
+    stack<Airport> s;
+    for(auto a : airportTable){
+        a.second.setVisited(false);
+    }
+
+    for(auto a : airportTable){
+        if(!a.second.isVisited()) {
+            dfs_art(a.second, s, res, index, true);
+        }
+    }
+
+    return res;
+}
+
+void Graph::dfs_art(Airport& a, stack<Airport>& s, unordered_set<string>& l, int& i, bool isRoot){
+
+    a.setNum(i);
+    a.setLow(i);
+    a.setProcessing(true);
+    a.setVisited(true);
+    i++;
+    s.push(a);
+
+    int children = 0;
+
+    for (auto f : a.getFlights()){
+        if(!airportTable.find(airportHash(f.getDestCode()))->second.isVisited()){
+            children++;
+            dfs_art(airportTable.find(airportHash(f.getDestCode()))->second,s,l,i,false);
+            a.setLow(min(a.getLow(),airportTable.find(airportHash(f.getDestCode()))->second.getLow()));
+
+            if((!isRoot && airportTable.find(airportHash(f.getDestCode()))->second.getLow() >= a.getNum()) || (isRoot && children > 1)){
+                l.insert(a.getName());
+            }
+        }
+        else if (airportTable.find(airportHash(f.getDestCode()))->second.isProcessing()){
+            a.setLow(min(a.getLow(), airportTable.find(airportHash(f.getDestCode()))->second.getNum()));
+        }
+    }
+
+    a.setProcessing(false);
+    if(!isRoot){
+        s.pop();
     }
 
 }
