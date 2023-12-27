@@ -1,6 +1,7 @@
 #include <set>
 #include <iostream>
 #include <unordered_set>
+#include <sstream>
 #include "Graph.h"
 
 Graph::Graph() {
@@ -294,3 +295,58 @@ void Graph::dfs_art(Airport& a, stack<Airport>& s, unordered_set<string>& l, int
     }
 
 }
+
+vector<string> Graph::getAirportCode(string &input, string& mode) {
+    vector<string> res;
+
+    if(mode == "code"){
+        auto found = airportTable.find(airportHash(input));
+        if(found == airportTable.end()){
+            return res;
+        }
+        else{
+            res.push_back(input);
+        }
+    }
+
+    if(mode == "name"){
+        for(auto a : airportTable){
+            if(a.second.name == input){
+                res.push_back(a.second.code);
+                break;
+            }
+        }
+        return res;
+    }
+
+    if(mode == "city"){
+        istringstream ss(input);
+        string city, country;
+
+        getline(ss, city, ',');
+        getline(ss, country);
+
+        auto found = cityTable.find(cityHash(city,country));
+        if(found == cityTable.end()){
+            return res;
+        }
+        else{
+            for( auto a :found->second.getAirportCodes()){
+                res.push_back(a);
+            }
+        }
+    }
+
+    if(mode == "coord"){
+        istringstream ss(input);
+        string lat, longi;
+
+        getline(ss, lat, ',');
+        getline(ss, longi);
+
+        //ver quais sao aeroportos mais perto e fazer push back.
+
+    }
+
+}
+

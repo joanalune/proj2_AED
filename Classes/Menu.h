@@ -13,10 +13,12 @@ public:
     void mainMenuView();
     void statisticsMenuView();
     void bestFlightsMenuView();
+    void bestFlightsFiltersMenuView();
 
     int runMainMenu();
     int runStatisticsMenu();
     int runBestFlightsMenu();
+    int runBestFlightsFiltersMenu();
 
     void printNrAirportsFlights();
     void printNrFlightsSpecifiedAirport();
@@ -24,6 +26,11 @@ public:
     void printEssentialAirports();
 
     void waitForInput() const;
+
+
+
+
+
 };
 
 #endif //PROJ2_AED_MENU_H

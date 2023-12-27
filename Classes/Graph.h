@@ -30,6 +30,7 @@ public:
     int getNumFlights() const;
     set<Airport> topAirports ();
     unordered_set<string> essentialAirports();
+    vector<string> getAirportCode(string &input,string& mode);
 
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
@@ -49,6 +50,8 @@ public:
     int airlineHash(const string& code);
 
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
+
+
 };
 
 
