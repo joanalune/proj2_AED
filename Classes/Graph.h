@@ -3,6 +3,7 @@
 
 #include "string.h"
 #include "Airport.h"
+#include "city.h"
 
 #include <cstddef>
 #include <vector>
@@ -55,7 +56,7 @@ public:
 
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
 
-
+    int listIncomingFlightsToCity(const string &name, const string &country);
 };
 
 

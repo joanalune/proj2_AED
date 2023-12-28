@@ -92,7 +92,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 3:
-                //printNrFlightsPerCityAirline();
+                printNrFlightsCity();
                 waitForInput();
                 break;
             case 4:
@@ -334,6 +334,29 @@ void Menu::printNrFlightsSpecifiedAirport() {
         " flights outgoing, from "<<graph.getAirportTable().at(findByCode).getNrDifferentAirlines()<<" different airlines."<<endl;
     }
 }
+
+void Menu::printNrFlightsCity(){
+    cout << "Enter city name: " << endl;
+    string cityName;
+    cin >> cityName;
+
+    cout << "Enter city country: " << endl;
+    string cityCountry;
+    cin >> cityCountry;
+
+    auto findByCode = graph.cityHash(cityName, cityCountry);
+    int inFlights = graph.listIncomingFlightsToCity(cityName, cityCountry);
+
+    if(graph.getCityTable().find(findByCode) == graph.getCityTable().end()){
+        cout << "City not found!"<<endl;
+    }
+
+    else{
+        cout << graph.getCityTable().at(findByCode).getName() << " has " << inFlights <<
+             " flights arriving";
+    }
+}
+
 
 void Menu::printTopAirports(){
     int in;

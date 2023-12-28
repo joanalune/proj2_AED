@@ -333,6 +333,19 @@ void Graph::dfs_art(Airport& a, stack<Airport>& s, unordered_set<string>& l, int
 
 }
 
+int Graph::listIncomingFlightsToCity(const std::string &name, const std::string &country) {
+    int inFlights=0;
+    auto found = cityTable.find(cityHash(name, country));
+    auto airportCodes = found->second.getAirportCodes();
+
+    for (const auto& code : airportCodes) {
+        auto port = airportTable.find(airportHash(code));
+        inFlights += port->second.getInDegree();
+    }
+
+    return inFlights;
+}
+
 vector<string> Graph::getAirportCode(string &input, string& mode) {
     vector<string> res;
 
