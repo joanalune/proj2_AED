@@ -92,7 +92,9 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 3:
-                printNrFlightsCity();
+                printNumFlightsPerCityAirline();
+                //printNrFlightsCity();
+                //printNrFlightsAirline();
                 waitForInput();
                 break;
             case 4:
@@ -335,25 +337,38 @@ void Menu::printNrFlightsSpecifiedAirport() {
     }
 }
 
-void Menu::printNrFlightsCity(){
-    cout << "Enter city name: " << endl;
-    string cityName;
-    cin >> cityName;
 
-    cout << "Enter city country: " << endl;
-    string cityCountry;
-    cin >> cityCountry;
+void Menu::printNumFlightsPerCityAirline() {
+    unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumFlightsPerCityAirline();
 
-    auto findByCode = graph.cityHash(cityName, cityCountry);
-    int inFlights = graph.listIncomingFlightsToCity(cityName, cityCountry);
+    cout << "Number of flights per City/Airline:" << endl;
 
-    if(graph.getCityTable().find(findByCode) == graph.getCityTable().end()){
-        cout << "City not found!"<<endl;
+    for (const auto& city : flightsPerCityAirline) {
+        cout << "City: " << city.first << endl;
+
+        for (const auto& airline : city.second) {
+            cout << "    Airline: " << airline.first << " - Flights: " << airline.second << endl;
+        }
     }
+}
 
-    else{
-        cout << graph.getCityTable().at(findByCode).getName() << " has " << inFlights <<
-             " flights arriving";
+
+//--funcionam
+void Menu::printNrFlightsCity() {
+    for (const auto& airport : graph.getAirportTable()) {
+        cout << airport.second.getName() << " has " << airport.second.getOutDegree() <<
+             " flights outgoing, from " << airport.second.getNrDifferentAirlines() <<
+             " different airlines." << endl;
+    }
+}
+
+void Menu::printNrFlightsAirline() {
+    unordered_map<string, int> flightsPerCityAirline = graph.getNumFlightsPerAirline();
+
+    cout << "Number of flights per airline:" << endl;
+
+    for (const auto& pair : flightsPerCityAirline) {
+        cout << pair.first << ": " << pair.second << " flights" << endl;
     }
 }
 

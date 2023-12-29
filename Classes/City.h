@@ -13,9 +13,9 @@ private:
     vector<string> airportCodes;
 public:
     City(string name, string country);
-    string getName();
+    string getName() const;
     string getCountry();
-    vector<string> getAirportCodes();
+    vector<string> getAirportCodes() const;
 
     void addAirportCode(const string& airportCode);
 };

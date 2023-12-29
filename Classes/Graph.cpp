@@ -5,6 +5,8 @@
 #include <cmath>
 #include "Graph.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstring-plus-int"
 Graph::Graph() {
     airportTable = {};
     airlineTable = {};
@@ -330,20 +332,63 @@ void Graph::dfs_art(Airport& a, stack<Airport>& s, unordered_set<string>& l, int
     if(!isRoot){
         s.pop();
     }
-
 }
 
-int Graph::listIncomingFlightsToCity(const std::string &name, const std::string &country) {
-    int inFlights=0;
-    auto found = cityTable.find(cityHash(name, country));
-    auto airportCodes = found->second.getAirportCodes();
 
-    for (const auto& code : airportCodes) {
-        auto port = airportTable.find(airportHash(code));
-        inFlights += port->second.getInDegree();
+unordered_map<string, unordered_map<string, int>> Graph::getNumFlightsPerCityAirline() {
+    unordered_map<string, unordered_map<string, int>> flightsPerCityAirline;
+
+    for (const auto& airport : airportTable) {
+        const string& cityName = airport.second.getCityName();
+        const vector<Flight>& flights = airport.second.getFlights();
+
+        for (const auto& flight : flights) {
+            string airlineCode = flight.getAirlineCode();
+
+            flightsPerCityAirline[cityName][airlineCode]++;
+        }
     }
+    return flightsPerCityAirline;
+}
 
-    return inFlights;
+
+//---> Funciona <---//
+
+unordered_map<string, int> Graph::getNumFlightsPerCity() {
+    unordered_map<string, int> flightsPerCity;
+    for (const auto& city : cityTable) {
+        int cityFlights = 0;
+        const auto& airportCodes = city.second.getAirportCodes();
+
+        for (const auto& code : airportCodes) {
+            auto port = airportTable.find(airportHash(code));
+            if (port != airportTable.end()) {
+                cityFlights += port->second.getFlights().size();
+            }
+        }
+        flightsPerCity[city.second.getName()] = cityFlights;
+    }
+    return flightsPerCity;
+}
+
+//---> Funciona <---//
+
+unordered_map<string, int> Graph::getNumFlightsPerAirline() {
+    unordered_map<string, int> flightsPerAirline;
+    for (const auto& airport : airportTable) {
+        const vector<Flight>& flights = airport.second.getFlights();
+
+        for (const auto& flight : flights) {
+            string airlineCode = flight.getAirlineCode();
+
+            if (flightsPerAirline.find(airlineCode) != flightsPerAirline.end()) {
+                flightsPerAirline[airlineCode]++;
+            } else {
+                flightsPerAirline[airlineCode] = 1;
+            }
+        }
+    }
+    return flightsPerAirline;
 }
 
 vector<string> Graph::getAirportCode(string &input, string& mode) {
@@ -445,3 +490,4 @@ double Graph::calculateDistance(double lat1, double lon1, double lat2, double lo
 
     return distance;
 }
+#pragma clang diagnostic pop

@@ -56,8 +56,18 @@ public:
 
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
 
-    int listIncomingFlightsToCity(const string &name, const string &country);
-};
+
+
+    unordered_map<string, unordered_map<string, int>> getNumFlightsPerCityAirline();
+    unordered_map<string, int> getNumFlightsPerAirline();
+    unordered_map<string, int> getNumFlightsPerCity();
+
+
+    int getInFlightsPerCity();
+    int getOutFlightsPerCity();
+
+    int getNumCountriesFliesTo();
+    };
 
 
 
