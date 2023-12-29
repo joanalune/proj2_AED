@@ -20,6 +20,7 @@ class Airport {
     int inDegree;          // auxiliary field
     int num;               // auxiliary field
     int low;               // auxiliary field
+    string last;           // auxiliary field; stores key to airport visited previously in bfs
 
     void addFlight(Flight flight);
     bool removeEdgeTo(Airport *d);
@@ -46,6 +47,8 @@ public:
     int getOutDegree() const;
     int getNrDifferentAirlines() const;
     void setInDegree(int indegree);
+    string getLast() const;
+    void setLast(const string& last);
 
     int getNum() const;
     void setNum(int num);

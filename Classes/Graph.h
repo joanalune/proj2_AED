@@ -33,6 +33,13 @@ public:
     set<Airport> topAirports ();
     unordered_set<string> essentialAirports();
 
+    struct filter {
+        int type;
+        vector<string> codes;
+    };
+    vector<vector<string>> getBestTrips(string source, string destination, int& optimalDist);
+
+
     bool addAirport(const Airport& airport);
     bool removeVertex(const string &in);
     bool addFlight(const string& source, const Flight& flight);

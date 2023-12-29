@@ -165,7 +165,7 @@ int Menu::runBestFlightsMenu() {
             case 1:
                 return 0;
             default:
-                //printBestFlights(); //will ask for filters
+                printBestFlights(); //will ask for filters
                 waitForInput();
                 break;
         }
@@ -257,5 +257,27 @@ void Menu::printEssentialAirports(){
         cout << a<< endl;
     }
 
+}
+
+void Menu::printBestFlights() {
+    string source;
+    string destination;
+
+    cout << "\nsource?\n";
+    cin >> source;
+    cout << "\ndestination?\n";
+    cin >> destination;
+
+    int bestDist;
+    vector<vector<string>> res = graph.getBestTrips(source, destination, bestDist);
+
+    for (auto path : res) {
+        for (int i = path.size() - 1; i >= 0; i--) {
+            cout << path[i] << "  ";
+        }
+        cout << "\n";
+    }
+
+    cout << "best trip stops:" << bestDist << '\n';
 }
 

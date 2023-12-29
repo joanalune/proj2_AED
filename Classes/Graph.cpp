@@ -1,6 +1,7 @@
 #include <set>
 #include <iostream>
 #include <unordered_set>
+#include <climits>
 #include "Graph.h"
 
 Graph::Graph() {
@@ -348,4 +349,61 @@ vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a 
     }
     diameter = maxStops;
     return res;
+}
+
+vector<vector<string>> Graph::getBestTrips(string source, string destination, int& optimalDist) {
+    vector<vector<string>> optimalPaths{};
+
+    vector<string> optimalPath;
+
+    queue<string> q;
+
+    optimalDist = INT_MAX;
+
+    for (auto& v : airportTable)
+        v.second.setVisited(false);
+
+    q.push(source);
+    airportTable.at(airportHash(source)).setVisited(true);
+
+
+    int stops = 0;
+    int qSize;
+
+    while (!q.empty() && stops < optimalDist) {
+        qSize = q.size();
+
+        for (int i = 0; i < qSize; i++) {
+            auto a = q.front();
+            q.pop();
+
+            for (auto &e: airportTable.at(airportHash(a)).getFlights()) {
+                string dest = e.getDestCode();
+                if (airportTable.at(airportHash(dest)).isVisited() && dest != destination) continue;
+                airportTable.at(airportHash(dest)).setLast(a);
+
+                if (dest == destination) {
+                    optimalDist = stops;
+                    optimalPath = vector<string>();
+                    string pathFinder = dest;  // holds consecutively (backwards) each airport code that constitutes a path;
+
+                    while (pathFinder != source) {
+                        optimalPath.push_back(pathFinder);
+                        pathFinder = airportTable.at(airportHash(pathFinder)).getLast();
+                    }
+                    optimalPath.push_back(pathFinder);  // add source;
+
+                    optimalPaths.push_back(optimalPath);
+                }
+                if (!airportTable.at(airportHash(dest)).isVisited()) {
+                    q.push(dest);
+                    airportTable.at(airportHash(dest)).setVisited(true);
+                }
+            }
+        }
+        stops++;
+
+    }
+
+    return optimalPaths;
 }

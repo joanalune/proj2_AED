@@ -111,3 +111,11 @@ int Airport::getNrDifferentAirlines() const {
 bool Airport::operator<(Airport b) const{
     return this->flights.size() > b.flights.size();
 }
+
+string Airport::getLast() const {
+    return last;
+}
+
+void Airport::setLast(const string& last) {
+    this->last = last;
+}
