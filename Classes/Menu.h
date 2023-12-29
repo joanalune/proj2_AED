@@ -30,6 +30,8 @@ public:
     void printNrFlightsAirline();
     void printNumFlightsPerCityAirline();
 
+    void printNumCountriesFliesTo();
+
     void waitForInput() const;
 
 

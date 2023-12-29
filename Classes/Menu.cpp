@@ -99,6 +99,7 @@ int Menu::runStatisticsMenu() {
                 break;
             case 4:
                 //printNrDifferentCountries();
+                printNumCountriesFliesTo();
                 waitForInput();
                 break;
             case 5:
@@ -337,7 +338,7 @@ void Menu::printNrFlightsSpecifiedAirport() {
     }
 }
 
-
+//--funcionam
 void Menu::printNumFlightsPerCityAirline() {
     unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumFlightsPerCityAirline();
 
@@ -352,8 +353,6 @@ void Menu::printNumFlightsPerCityAirline() {
     }
 }
 
-
-//--funcionam
 void Menu::printNrFlightsCity() {
     for (const auto& airport : graph.getAirportTable()) {
         cout << airport.second.getName() << " has " << airport.second.getOutDegree() <<
@@ -369,6 +368,21 @@ void Menu::printNrFlightsAirline() {
 
     for (const auto& pair : flightsPerCityAirline) {
         cout << pair.first << ": " << pair.second << " flights" << endl;
+    }
+}
+
+void Menu::printNumCountriesFliesTo() {
+    cout << "Enter airport code: " << endl;
+
+    string airportCode;
+    cin >> airportCode;
+
+    int numCountries = graph.getNumCountriesFliesTo(airportCode);
+
+    if (numCountries == -1) {
+        cout << "Airport not found!" << endl;
+    } else {
+        cout << "The airport " << airportCode << " flies to " << numCountries << " different countries." << endl;
     }
 }
 

@@ -63,11 +63,9 @@ public:
     unordered_map<string, int> getNumFlightsPerCity();
 
 
-    int getInFlightsPerCity();
-    int getOutFlightsPerCity();
+    int getNumCountriesFliesTo(const string& airportCode);
 
-    int getNumCountriesFliesTo();
-    };
+};
 
 
 
