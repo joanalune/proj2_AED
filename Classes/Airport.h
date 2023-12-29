@@ -19,7 +19,7 @@ class Airport {
     bool processing;       // auxiliary field
     int num;               // auxiliary field
     int low;               // auxiliary field
-    int inDegree;
+    int inDegree=0;
 
     void addFlight(Flight flight);
     bool removeEdgeTo(Airport *d);
@@ -46,7 +46,8 @@ public:
 
     int getOutDegree() const;
     void setInDegree(int inDegree);
-
+    int getInDegree() const;
+    void increaseInDegree();
 
     int getNum() const;
     int getLow() const;

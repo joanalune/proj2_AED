@@ -93,6 +93,10 @@ void Airport::setInDegree(int in) {
     Airport::inDegree = in;
 }
 
+int Airport::getInDegree() const{
+    return inDegree;
+}
+
 int Airport::getNrDifferentAirlines() const {
     set<string> airlines;
 
@@ -104,6 +108,9 @@ int Airport::getNrDifferentAirlines() const {
 }
 
 bool Airport::operator<(Airport b) const{
-    cout << inDegree << endl;
-    return this->flights.size()+inDegree > b.flights.size() + b.inDegree;
+    return this->flights.size()+this->getInDegree() > b.flights.size() + b.getInDegree();
+}
+
+void Airport::increaseInDegree() {
+    inDegree++;
 }

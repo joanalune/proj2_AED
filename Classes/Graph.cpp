@@ -1,5 +1,4 @@
 #include <set>
-#include <iostream>
 #include <unordered_set>
 #include <sstream>
 #include <cmath>
@@ -63,6 +62,8 @@ bool Graph::addFlight(const string& source, const Flight& flight) {
         || airlineTable.find(alHash) == airlineTable.end()) return false;
 
     airportTable.at(sapHash).addFlight(flight);
+    airportTable.at(dapHash).increaseInDegree();
+
     return true;
 }
 
@@ -431,17 +432,4 @@ double Graph::calculateDistance(double lat1, double lon1, double lat2, double lo
     double distance = radiusOfEarth * c;
 
     return distance;
-}
-
-int Graph::getInDegree(Airport& airport) const {
-    int res = 0;
-    for(auto a : airportTable){
-        for(auto b : a.second.getFlights()){
-            if(b.getDestCode() == airport.code){
-                res++;
-            }
-        }
-    }
-    airport.setInDegree(res);
-    return res;
 }
