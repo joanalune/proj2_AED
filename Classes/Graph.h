@@ -39,6 +39,9 @@ public:
     bool addFlight(const string& source, const Flight& flight);
     bool removeEdge(const string &sourc, const string &dest);
     void addAirline(const Airline& airline);
+
+    int getInDegree(Airport& airport) const;
+
     unordered_map<int, Airport> getAirportTable() const;
     unordered_map<int, City> getCityTable() const;
     unordered_map<int, Airline> getAirlineTable() const;

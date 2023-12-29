@@ -353,7 +353,7 @@ void Menu::printTopAirports(){
         for(auto a : x){
             if(count == in){break;}
             count++;
-            cout << count << ". "<< a.getName() << ": "<< a.getFlights().size() << " flights." << endl;
+            cout << count << ". "<< a.getName() << ": "<< graph.getInDegree(a) << " flights incoming and "<< a.getOutDegree() << " flights outgoing. " << a.getOutDegree() + graph.getInDegree(a) << " flights total."<< endl;
         }
     }
 

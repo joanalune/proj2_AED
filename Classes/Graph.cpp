@@ -432,3 +432,16 @@ double Graph::calculateDistance(double lat1, double lon1, double lat2, double lo
 
     return distance;
 }
+
+int Graph::getInDegree(Airport& airport) const {
+    int res = 0;
+    for(auto a : airportTable){
+        for(auto b : a.second.getFlights()){
+            if(b.getDestCode() == airport.code){
+                res++;
+            }
+        }
+    }
+    airport.setInDegree(res);
+    return res;
+}
