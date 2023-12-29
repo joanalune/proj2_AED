@@ -32,6 +32,7 @@ public:
     vector<string> farthestAirportsFrom(const string& source, int &stops);
     set<Airport> topAirports ();
     unordered_set<string> essentialAirports();
+    vector<string> getAirportCode(string &input,string& mode);
 
     struct filter {
         int type;
@@ -45,6 +46,8 @@ public:
     bool addFlight(const string& source, const Flight& flight);
     bool removeEdge(const string &sourc, const string &dest);
     void addAirline(const Airline& airline);
+
+
     unordered_map<int, Airport> getAirportTable() const;
     unordered_map<int, City> getCityTable() const;
     unordered_map<int, Airline> getAirlineTable() const;
@@ -52,12 +55,22 @@ public:
     vector<string> dfs(const string & source);
     vector<string> bfs(const string &source);
 
+    double calculateDistance(double lat1, double lon1, double lat2, double lon2);
+    int calculateDifferentCities(vector<string> &v);
+    int calculateDifferentCountries(vector<string> &v);
 
     int airportHash(const string& code);
     int cityHash(const string& name, const string& country);
     int airlineHash(const string& code);
 
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
+
+
+    vector<string> nodesAtDistanceBFS(Airport &source, int k);
+
+
+
+
 };
 
 

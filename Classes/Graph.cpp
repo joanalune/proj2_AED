@@ -1,7 +1,9 @@
 #include <set>
-#include <iostream>
 #include <unordered_set>
 #include <climits>
+#include <sstream>
+#include <cmath>
+#include <iostream>
 #include "Graph.h"
 
 Graph::Graph() {
@@ -62,60 +64,11 @@ bool Graph::addFlight(const string& source, const Flight& flight) {
         || airlineTable.find(alHash) == airlineTable.end()) return false;
 
     airportTable.at(sapHash).addFlight(flight);
+    airportTable.at(dapHash).increaseInDegree();
+
     return true;
 }
 
-
-/*
- * Removes an edge from a graph (this).
- * The edge is identified by the source (sourc) and destination (dest) contents.
- * Returns true if successful, and false if such edge does not exist.
-
-
-bool Graph::removeEdge(const string &sourc, const string &dest) {
-    auto v1 = findVertex(sourc);
-    auto v2 = findVertex(dest);
-    if (v1 == NULL || v2 == NULL)
-        return false;
-    return v1->removeEdgeTo(v2);
-}
-
-
- * Auxiliary function to remove an outgoing edge (with a given destination (d))
- * from a vertex (this).
- * Returns true if successful, and false if such edge does not exist.
-
-
-bool Airport::removeEdgeTo(Airport *d) {
-    for (auto it = adj.begin(); it != adj.end(); it++)
-        if (it->dest  == d) {
-            adj.erase(it);
-            return true;
-        }
-    return false;
-}
-
-
- *  Removes a vertex with a given content (in) from a graph (this), and
- *  all outgoing and incoming edges.
- *  Returns true if successful, and false if such vertex does not exist.
-
-
-
-
-bool Graph::removeVertex(const string &in) {
-    for (auto it = vertexSet.begin(); it != vertexSet.end(); it++)
-        if ((*it)->airport  == in) {
-            auto v = *it;
-            vertexSet.erase(it);
-            for (auto u : vertexSet)
-                u->removeEdgeTo(v);
-            delete v;
-            return true;
-        }
-    return false;
-}
-*/
 
 /****************** DFS ********************/
 /*
@@ -332,6 +285,71 @@ void Graph::dfs_art(Airport& a, stack<Airport>& s, unordered_set<string>& l, int
 
 }
 
+vector<string> Graph::getAirportCode(string &input, string& mode) {
+    vector<string> res;
+
+    if(mode == "code"){
+        auto found = airportTable.find(airportHash(input));
+        if(found == airportTable.end()){
+            return res;
+        }
+        else{
+            res.push_back(input);
+        }
+    }
+
+    if(mode == "name"){
+        for(auto a : airportTable){
+            if(a.second.name == input){
+                res.push_back(a.second.code);
+                break;
+            }
+        }
+        return res;
+    }
+
+    if(mode == "city"){
+        istringstream ss(input);
+        string city, country;
+
+        getline(ss, city, ',');
+        getline(ss, country);
+
+        auto found = cityTable.find(cityHash(city,country));
+        if(found == cityTable.end()){
+            return res;
+        }
+        else{
+            for( auto a :found->second.getAirportCodes()){
+                res.push_back(a);
+            }
+        }
+    }
+
+    if(mode == "coord"){
+        istringstream ss(input);
+        string lat, longi;
+
+        getline(ss, lat, ',');
+        getline(ss, longi);
+
+        double minDistance = std::numeric_limits<double>::max();
+
+        for (const auto& a : airportTable) {
+            double distance = calculateDistance(stod(lat), stod(longi), a.second.getLatitude(), a.second.getLongitude());
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                res.clear();
+                res.push_back(a.second.code);
+            } else if (distance == minDistance) {
+                res.push_back(a.second.code);
+            }
+        }
+    }
+
+}
+
 vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a vector with pairs (source, destination) of graph diameter and places diameter in diameter
     vector<pair<string, string>> res;
     int stops = 0;
@@ -360,7 +378,7 @@ vector<vector<string>> Graph::getBestTrips(string source, string destination, in
 
     optimalDist = INT_MAX;
 
-    for (auto& v : airportTable)
+    for (auto &v: airportTable)
         v.second.setVisited(false);
 
     q.push(source);
@@ -406,4 +424,73 @@ vector<vector<string>> Graph::getBestTrips(string source, string destination, in
     }
 
     return optimalPaths;
+}
+double Graph::calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double radiusOfEarth = 6371.0;
+
+    double dLat = (lat2 - lat1) * (M_PI / 180.0);
+    double dLon = (lon2 - lon1) * (M_PI / 180.0);
+
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+               cos(lat1 * (M_PI / 180.0)) * cos(lat2 * (M_PI / 180.0)) *
+               sin(dLon / 2) * sin(dLon / 2);
+
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    double distance = radiusOfEarth * c;
+
+    return distance;
+}
+
+vector<string> Graph::nodesAtDistanceBFS(Airport &source, int k) {
+    vector<string> res;
+    queue<string> q;
+
+    for (auto &a: airportTable) {
+        a.second.setVisited(false);
+    }
+
+    int level = 0;
+
+    q.push(source.getCode());
+
+    while (!q.empty() && level <= k) {
+        auto size = q.size();
+        for (int i = 0; i < size; i++){
+            auto v = q.front();
+            airportTable.at(airportHash(q.front())).setVisited(true);
+
+            for (auto f: airportTable.at(airportHash(q.front())).getFlights()) {
+                if (!airportTable.at(airportHash(f.getDestCode())).isVisited()) {
+                    airportTable.at(airportHash(f.getDestCode())).setVisited(true);
+                    q.push(f.getDestCode());
+
+                    res.push_back(f.getDestCode());
+
+                }
+
+            }
+            q.pop();
+
+
+        }
+        level++;
+    }
+
+    return res;
+}
+
+int Graph::calculateDifferentCities(vector<string>& v){
+    set<string> cities;
+    for(auto s : v){
+        cities.insert(airportTable.at(airportHash(s)).getCityName());
+    }
+    return cities.size();
+}
+
+int Graph::calculateDifferentCountries(vector<string>& v){
+    set<string> countries;
+    for(auto s : v){
+        countries.insert(airportTable.at(airportHash(s)).getCountryName());
+    }
+    return countries.size();
 }

@@ -78,6 +78,7 @@ void FileReader::readFlights() {
 
         graph->addFlight(source, Flight(target, airline));
 
+
     }
     file.close();
 }

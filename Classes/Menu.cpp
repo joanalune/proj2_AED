@@ -69,7 +69,7 @@ void Menu::statisticsMenuView() {
     cout    << "2. Number of flights out of specified airport" << endl; //also print nr of airlines
     cout    << "3. Number of flights per city/airline" << endl;
     cout    << "4. Number of different countries a specified airport/city flies to" << endl;
-    cout    << "5. Number of reachable destinations available for specified airport" << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
+    cout    << "5. Number of reachable destinations available for specified airport in a maximum number of X stops." << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
     cout    << "6. Flight trips with the greatest number of stops" << endl;
     cout    << "7. Top X airports with the greatest flight capacity" << endl;
     cout    << "8. Essential airports for circulation capability" << endl; //articulation points
@@ -100,7 +100,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 5:
-                //printNrDestinationsAirport();
+                printNrDestinationsAirport();
                 waitForInput();
                 break;
             case 6:
@@ -117,25 +117,7 @@ int Menu::runStatisticsMenu() {
                 break;
             case 9:
                 return 0;
-            case 10:
-                /*
-                for (auto a : graph.getAirportTable()) {
-                    cout << '\n' << a.second.getCode()  << "  " << a.second.getName() << "  " << a.second.getCountryName() << ',' << a.second.getCityName();
-                }
-                cout << '\n' << graph.getNumAirport();
-                */
-                /*
-                for (auto a : graph.getCityTable()) {
-                    cout << '\n' << a.second.getCountry() << ',' << a.second.getName() << "  " << a.second.getAirportCodes().size();
-                }
-                cout << '\n' << graph.getCityTable().size() << '\n';
-                */
-                /*
-                for (auto a : graph.getAirlineTable()) {
-                    cout << '\n' << a.second.getCode() << "  " << a.second.getCallSign() << "  " << a.second.getName() << "  " << a.second.getCountry();
-                }
-                cout << '\n' << graph.getAirlineTable().size() << '\n';
-                */
+
             default:
                 cout<<"Invalid input";
         }
@@ -148,28 +130,171 @@ void Menu::bestFlightsMenuView() {
     cout    << "            Best Flight Option          " << endl;
     cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
     cout    << endl;
-    cout    << "Insert your source and destination separated by a '>'." << endl;
-    cout    << "For example: YCB-New York,United States or 35.016667,-1.450000-La Guardia"<< endl;
-    cout    << "1. Exit" << endl;
+    cout    << "Please insert your source location. Which format would you like to use?" << endl;
+    cout    << "1. Airport Code" << endl;
+    cout    << "2. Airport Name" << endl;
+    cout    << "3. City and country" << endl;
+    cout    << "4. Coordinates" << endl;
+    cout    << "5. Exit" << endl;
 }
 
 int Menu::runBestFlightsMenu() {
+    string mode, source, dest;
+    vector<string> sourceAirports, destAirports;
     while (true) {
         system("clear");
         bestFlightsMenuView();
+
+        int option1;
+        cin >> option1;
+
+        switch(option1){
+            case 1:
+                cout << "Please insert the source airport code:" << endl;
+                cin >> source;
+                mode = "code";
+                break;
+
+            case 2:
+                cout << "Please insert the source airport name:" << endl;
+                getline(std::cin >> std::ws, source);
+                mode = "name";
+                break;
+            case 3:
+                cout << "Please insert the source city and country in the format city,country:" << endl;
+                getline(std::cin >> std::ws, source);
+                mode = "city";
+                break;
+            case 4:
+                cout << "Please insert the source coordinates in the format latitude,longitude:" << endl;
+                cin >> source;
+                mode = "coord";
+                break;
+            case 5:
+                return 0;
+            default:
+                cout << "Invalid input" << endl;
+                return 0;
+        }
+
+        sourceAirports = graph.getAirportCode(source,mode);
+
+        if(sourceAirports.empty()){
+            cout << "Airports not found for source input!" << endl;
+            waitForInput();
+            return 0;
+        }
+        else{
+            cout << "Airports to consider for source input: ";
+            for(string code : sourceAirports){
+                cout << code << " ";
+            }
+            cout << endl;
+        }
+
+        //destiny selection menu
+
+        cout    << "Please insert your destiny location. Which format would you like to use?" << endl;
+        cout    << "1. Airport Code" << endl;
+        cout    << "2. Airport Name" << endl;
+        cout    << "3. City and country" << endl;
+        cout    << "4. Coordinates" << endl;
+        cout    << "5. Exit" << endl;
+
+        int option2;
+        cin >> option2;
+
+        switch(option2){
+            case 1:
+                cout << "Please insert the source airport code:" << endl;
+                cin >> dest;
+                mode = "code";
+                break;
+
+            case 2:
+                cout << "Please insert the source airport name:" << endl;
+                getline(std::cin >> std::ws, dest);
+                mode = "name";
+                break;
+            case 3:
+                cout << "Please insert the source city and country in the format city,country:" << endl;
+                getline(std::cin >> std::ws, dest);
+                mode = "city";
+                break;
+            case 4:
+                cout << "Please insert the source coordinates in the format latitude,longitude:" << endl;
+                cin >> dest;
+                mode = "coord";
+                break;
+            case 5:
+                return 0;
+            default:
+                cout << "Invalid input" << endl;
+                return 0;
+        }
+
+        destAirports = graph.getAirportCode(dest,mode);
+
+        if(destAirports.empty()){
+            cout << "Airports not found for destination input!" << endl;
+            waitForInput();
+            return 0;
+        }
+        else{
+            cout << "Airports to consider for destination input: ";
+            for(string code : destAirports){
+                cout << code << " ";
+            }
+            cout << endl;
+        }
+
+        runBestFlightsFiltersMenu();
+
+    }
+}
+
+void Menu::bestFlightsFiltersMenuView() {
+    cout    << endl;
+    cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+    cout    << "  Air Travel Flight Management System   " << endl;
+    cout    << "     Best Flight Option - Filters       " << endl;
+    cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+    cout    << endl;
+    cout    << "Which filters would you like to apply?" << endl;
+    cout    << "1. No filters" << endl;
+    cout    << "2. Use only certain airlines" << endl;
+    cout    << "3. Avoid certain airlines" << endl;
+    cout    << "4. Minimize airline changing" << endl;
+
+}
+
+int Menu::runBestFlightsFiltersMenu(){
+    while (true) {
+        system("clear");
+        bestFlightsFiltersMenuView();
 
         int option;
         cin >> option;
 
         switch (option) {
             case 1:
-                return 0;
-            default:
-                printBestFlights(); //will ask for filters
-                waitForInput();
+                //no filters func
                 break;
+            case 2:
+                //whitelist func
+                break;
+            case 3:
+                //blacklistfunc
+                break;
+            case 4:
+                //minimize airlines func
+                break;
+            default:
+                cout << "Invalid input" << endl;
+                return 0;
         }
     }
+
 }
 
 void Menu::printNrAirportsFlights() {
@@ -210,6 +335,33 @@ void Menu::printNrFlightsSpecifiedAirport() {
     }
 }
 
+void Menu::printNrDestinationsAirport() {
+    vector<string> res;
+    cout << "Enter airport code: " << endl;
+
+    string airportCode;
+    cin >> airportCode;
+
+    cout << "Enter the maximum number of stops: " << endl;
+    int in;
+    cin >> in;
+
+    if(graph.getAirportTable().find(graph.airportHash(airportCode)) == graph.getAirportTable().end() ){
+        cout << "Airport not found!" << endl;
+        return;
+    }
+
+    res = graph.nodesAtDistanceBFS(graph.getAirportTable().at(graph.airportHash(airportCode)),in);
+
+    int differentCities = graph.calculateDifferentCities(res);
+    int differentCountries = graph.calculateDifferentCountries(res);
+
+
+
+    cout << airportCode << " can reach " << res.size() << " airports, " << differentCities <<" cities and " << differentCountries << " countries" " in a maximum number of " << in <<" stops." << endl;
+
+}
+
 void Menu::printTopAirports(){
     int in;
     cout << "Enter X:" << endl;
@@ -225,10 +377,10 @@ void Menu::printTopAirports(){
     }
 
     else{
-        for(auto a : x){
+        for(auto& a : x){
             if(count == in){break;}
             count++;
-            cout << count << ". "<< a.getName() << ": "<< a.getFlights().size() << " flights." << endl;
+            cout << count << ". "<< a.getName() << ": "<< a.getInDegree() << " flights incoming and "<< a.getOutDegree() << " flights outgoing. " << a.getOutDegree() + a.getInDegree() << " flights total."<< endl;
         }
     }
 
@@ -256,7 +408,6 @@ void Menu::printEssentialAirports(){
     for(auto a : res){
         cout << a<< endl;
     }
-
 }
 
 void Menu::printBestFlights() {
