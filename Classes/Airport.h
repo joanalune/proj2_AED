@@ -15,6 +15,7 @@ class Airport {
     double longitude;
 
     vector<Flight> flights;  // list of outgoing flights
+
     bool visited;          // auxiliary field
     bool processing;       // auxiliary field
     int inDegree;          // auxiliary field
@@ -23,6 +24,8 @@ class Airport {
 
     void addFlight(Flight flight);
     bool removeEdgeTo(Airport *d);
+
+
 public:
     Airport(string airportCode, string name, string cityName, string countryName, double latitude, double longitude);
     string getName() const;
@@ -46,6 +49,8 @@ public:
     int getOutDegree() const;
     int getNrDifferentAirlines() const;
     void setInDegree(int indegree);
+    int getInDegreePort(const string& airportCode) const;
+
 
     int getNum() const;
     void setNum(int num);

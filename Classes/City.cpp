@@ -4,7 +4,7 @@
 
 City::City(string name, string country): name(name), country(country) {}
 
-string City::getName() {
+string City::getName() const {
     return name;
 }
 
@@ -16,7 +16,7 @@ void City::addAirportCode(const string &airportCode) {
     airportCodes.push_back(airportCode);
 }
 
-vector<string> City::getAirportCodes() {
+vector<string> City::getAirportCodes() const {
     return airportCodes;
 }
 

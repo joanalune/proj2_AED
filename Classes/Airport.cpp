@@ -35,7 +35,6 @@ int Airport::getInDegree() const {
     return inDegree;
 }
 
-
 void Airport::setInDegree(int inDegree) {
     Airport::inDegree = inDegree;
 }
