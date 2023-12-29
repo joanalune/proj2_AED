@@ -22,13 +22,14 @@ public:
 
     void printNrAirportsFlights();
     void printNrFlightsSpecifiedAirport();
+    void printNrDestinationsAirport();
+
     void printTopAirports();
     void printGreatestNumberStops();
     void printEssentialAirports();
 
+
     void waitForInput() const;
-
-
 
 
 

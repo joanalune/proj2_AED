@@ -69,7 +69,7 @@ void Menu::statisticsMenuView() {
     cout    << "2. Number of flights out of specified airport" << endl; //also print nr of airlines
     cout    << "3. Number of flights per city/airline" << endl;
     cout    << "4. Number of different countries a specified airport/city flies to" << endl;
-    cout    << "5. Number of reachable destinations available for specified airport" << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
+    cout    << "5. Number of reachable destinations available for specified airport in a maximum number of X stops." << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
     cout    << "6. Flight trips with the greatest number of stops" << endl;
     cout    << "7. Top X airports with the greatest flight capacity" << endl;
     cout    << "8. Essential airports for circulation capability" << endl; //articulation points
@@ -100,7 +100,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 5:
-                //printNrDestinationsAirport();
+                printNrDestinationsAirport();
                 waitForInput();
                 break;
             case 6:
@@ -333,6 +333,33 @@ void Menu::printNrFlightsSpecifiedAirport() {
         cout << graph.getAirportTable().at(findByCode).getName() << " has " << graph.getAirportTable().at(findByCode).getOutDegree()<<
         " flights outgoing, from "<<graph.getAirportTable().at(findByCode).getNrDifferentAirlines()<<" different airlines."<<endl;
     }
+}
+
+void Menu::printNrDestinationsAirport() {
+    vector<string> res;
+    cout << "Enter airport code: " << endl;
+
+    string airportCode;
+    cin >> airportCode;
+
+    cout << "Enter the maximum number of stops: " << endl;
+    int in;
+    cin >> in;
+
+    if(graph.getAirportTable().find(graph.airportHash(airportCode)) == graph.getAirportTable().end() ){
+        cout << "Airport not found!" << endl;
+        return;
+    }
+
+    res = graph.nodesAtDistanceBFS(graph.getAirportTable().at(graph.airportHash(airportCode)),in);
+
+    int differentCities = graph.calculateDifferentCities(res);
+    int differentCountries = graph.calculateDifferentCountries(res);
+
+
+
+    cout << airportCode << " can reach " << res.size() << " airports, " << differentCities <<" cities and " << differentCountries << " countries" " in a maximum number of " << in <<" stops." << endl;
+
 }
 
 void Menu::printTopAirports(){
