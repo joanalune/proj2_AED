@@ -18,7 +18,7 @@ using namespace std;
 
 struct filter {
     int type;
-    vector<string> codes;
+    set<string> codes;
 };
 
 class Graph {
@@ -79,11 +79,6 @@ public:
     vector<string> nodesAtDistanceBFS(Airport &source, int k);
 
 
-};
-
-struct filter {
-    int type;
-    set<string> codes;
 };
 
 #endif //PROJ2_AED_GRAPH_H
