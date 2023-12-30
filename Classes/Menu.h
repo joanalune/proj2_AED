@@ -29,12 +29,8 @@ public:
     void printEssentialAirports();
     void printBestFlights();
 
-
-    void printNrFlightsCity();
-    void printNrFlightsAirline();
-    void printNumFlightsPerCityAirline();
-
-    void printNumCountriesFliesTo();
+    void printNrFlightsCityAirline();
+    void printNrDifferentCountries();
 
     void waitForInput() const;
 
