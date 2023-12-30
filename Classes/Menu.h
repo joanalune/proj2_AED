@@ -27,7 +27,7 @@ public:
     void printTopAirports();
     void printGreatestNumberStops();
     void printEssentialAirports();
-    void printBestFlights();
+    void printBestFlights(vector<string> sources, vector<string> destinations, filter filter);
 
 
     void waitForInput() const;

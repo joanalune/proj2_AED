@@ -348,6 +348,8 @@ vector<string> Graph::getAirportCode(string &input, string& mode) {
         }
     }
 
+    return res;
+
 }
 
 vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a vector with pairs (source, destination) of graph diameter and places diameter in diameter
@@ -398,7 +400,8 @@ vector<vector<string>> Graph::getBestTrips(string source, string destination, in
             for (auto &e: airportTable.at(airportHash(a)).getFlights()) {
                 string dest = e.getDestCode();
                 if (airportTable.at(airportHash(dest)).isVisited() && dest != destination) continue;
-                airportTable.at(airportHash(dest)).setLast(a);
+                airportTable.at(airportHash(dest)).setLastAirport(a);
+                airportTable.at(airportHash(dest)).setLastAirline(e.getAirlineCode());
 
                 if (dest == destination) {
                     optimalDist = stops;
@@ -407,7 +410,8 @@ vector<vector<string>> Graph::getBestTrips(string source, string destination, in
 
                     while (pathFinder != source) {
                         optimalPath.push_back(pathFinder);
-                        pathFinder = airportTable.at(airportHash(pathFinder)).getLast();
+                        optimalPath.push_back(airportTable.at(airportHash(pathFinder)).getLastAirline());
+                        pathFinder = airportTable.at(airportHash(pathFinder)).getLastAirport();
                     }
                     optimalPath.push_back(pathFinder);  // add source;
 

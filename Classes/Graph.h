@@ -15,6 +15,10 @@
 
 using namespace std;
 
+struct filter {
+    int type;
+    vector<string> codes;
+};
 
 class Graph {
     unordered_map<int, Airport> airportTable;
@@ -34,10 +38,6 @@ public:
     unordered_set<string> essentialAirports();
     vector<string> getAirportCode(string &input,string& mode);
 
-    struct filter {
-        int type;
-        vector<string> codes;
-    };
     vector<vector<string>> getBestTrips(string source, string destination, int& optimalDist);
 
 

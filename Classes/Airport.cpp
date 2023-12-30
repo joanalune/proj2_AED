@@ -111,14 +111,22 @@ bool Airport::operator<(Airport b) const{
     return this->flights.size() > b.flights.size();
 }
 
-string Airport::getLast() const {
-    return last;
+string Airport::getLastAirport() const {
+    return lastAirport;
 }
 
-void Airport::setLast(const string& last) {
-    this->last = last;
+void Airport::setLastAirport(const std::string &lastAirport) {
+    this->lastAirport = lastAirport;
 }
 
 void Airport::increaseInDegree() {
     inDegree++;
+}
+
+string Airport::getLastAirline() const {
+    return lastAirline;
+}
+
+void Airport::setLastAirline(const string &lastAirline) {
+    this->lastAirline = lastAirline;
 }

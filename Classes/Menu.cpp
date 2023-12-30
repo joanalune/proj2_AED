@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <set>
+#include <climits>
 #include "Menu.h"
 
 using namespace std;
@@ -248,7 +249,11 @@ int Menu::runBestFlightsMenu() {
             cout << endl;
         }
 
+        filter filter;
+
         runBestFlightsFiltersMenu();
+
+        printBestFlights(sourceAirports, destAirports, filter);
 
     }
 }
@@ -410,22 +415,34 @@ void Menu::printEssentialAirports(){
     }
 }
 
-void Menu::printBestFlights() {
-    string source;
-    string destination;
+void Menu::printBestFlights(vector<string> sources, vector<string> destinations, filter filter) {
 
-    cout << "\nsource?\n";
-    cin >> source;
-    cout << "\ndestination?\n";
-    cin >> destination;
+    int tripBestDist;
+    int bestDist = INT_MAX;
 
-    int bestDist;
-    vector<vector<string>> res = graph.getBestTrips(source, destination, bestDist);
+    vector<vector<string>> res = {};      // best trips for all source-destination pairs
+    vector<vector<string>> partRes = {};  // best trips for a single source-destination pair
+
+
+    // get all best trips between each source and destination (some trips will not be optimal in comparison with different source-destination pairs)
+    for (string s : sources) {
+        for (string d : destinations) {
+            partRes = graph.getBestTrips(s, d, tripBestDist);
+            if (bestDist > tripBestDist) bestDist = tripBestDist;
+            res.insert(res.end(), partRes.begin(), partRes.end());
+        }
+    }
+
+    // remove all "best trips" that are too big; see last loop comment
+    for (auto it = res.begin(); it != res.end(); it++) {
+        if (it->size() > bestDist + bestDist-1) res.erase(it);
+    }
 
     for (auto path : res) {
-        for (int i = path.size() - 1; i >= 0; i--) {
-            cout << path[i] << "  ";
+        for (int i = path.size() - 1; i >= 1; i-=2) {
+            cout << path[i] << " --(" << path[i-1] << ")-> ";
         }
+        cout << path[0];
         cout << "\n";
     }
 

@@ -19,7 +19,8 @@ class Airport {
     bool processing;       // auxiliary field
     int num;               // auxiliary field
     int low;               // auxiliary field
-    string last;           // auxiliary field; stores key to airport visited previously in bfs
+    string lastAirport;    // auxiliary field; stores key to airport visited previously in bfs
+    string lastAirline;    //
     int inDegree=0;
 
     void addFlight(Flight flight);
@@ -47,8 +48,10 @@ public:
 
     int getOutDegree() const;
     int getNrDifferentAirlines() const;
-    string getLast() const;
-    void setLast(const string& last);
+    string getLastAirport() const;
+    void setLastAirport(const string& lastAirport);
+    string getLastAirline() const;
+    void setLastAirline(const string& lastAirline);
     void setInDegree(int inDegree);
     int getInDegree() const;
     void increaseInDegree();
