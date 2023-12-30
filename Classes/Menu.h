@@ -33,7 +33,7 @@ public:
     void waitForInput() const;
 
 
-
+    filter readFilterInput(int i);
 };
 
 #endif //PROJ2_AED_MENU_H
