@@ -8,7 +8,7 @@ string City::getName() const {
     return name;
 }
 
-string City::getCountry() {
+string City::getCountry() const {
     return country;
 }
 

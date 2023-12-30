@@ -338,7 +338,56 @@ void Menu::printNrFlightsSpecifiedAirport() {
     }
 }
 
+
+void Menu::printNumFlightsPerCityAirline() {
+    int option;
+    cout << "1. Search flights by city/airline " << endl;
+    cout << "2. Search flights by city" << endl;
+    cout << "3. Search flights by airline" << endl;
+
+    cin >> option;
+
+    switch (option) {
+        case 1: {
+            unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumFlightsPerCityAirline();
+            cout << "Number of flights per City/Airline:" << endl;
+
+            for (const auto& city : flightsPerCityAirline) {
+                cout << "City: " << city.first << endl;
+
+                for (const auto& airline : city.second) {
+                    cout << "    Airline: " << airline.first << " - Flights: " << airline.second << endl;
+                }
+            }
+            break;
+        }
+        case 2: {
+            cout << "Number of flights per airline:" << endl;
+
+            for (const auto& airport : graph.getAirportTable()) {
+                cout << airport.second.getName() << " has " << airport.second.getOutDegree() <<
+                     " flights outgoing, from " << airport.second.getNrDifferentAirlines() <<
+                     " different airlines." << endl;
+            }
+            break;
+        }
+        case 3: {
+            unordered_map<string, int> flightsPerCityAirline = graph.getNumFlightsPerAirline();
+            cout << "Number of flights per airline:" << endl;
+
+            for (const auto& pair : flightsPerCityAirline) {
+                cout << pair.first << ": " << pair.second << " flights" << endl;
+            }
+            break;
+        }
+        default:
+            cout << "Invalid choice." << endl;
+            break;
+    }
+}
+
 //--funcionam
+/*
 void Menu::printNumFlightsPerCityAirline() {
     unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumFlightsPerCityAirline();
 
@@ -352,7 +401,7 @@ void Menu::printNumFlightsPerCityAirline() {
         }
     }
 }
-
+/*
 void Menu::printNrFlightsCity() {
     for (const auto& airport : graph.getAirportTable()) {
         cout << airport.second.getName() << " has " << airport.second.getOutDegree() <<
@@ -360,29 +409,59 @@ void Menu::printNrFlightsCity() {
              " different airlines." << endl;
     }
 }
-
 void Menu::printNrFlightsAirline() {
     unordered_map<string, int> flightsPerCityAirline = graph.getNumFlightsPerAirline();
-
     cout << "Number of flights per airline:" << endl;
-
     for (const auto& pair : flightsPerCityAirline) {
         cout << pair.first << ": " << pair.second << " flights" << endl;
     }
 }
+*/
 
 void Menu::printNumCountriesFliesTo() {
-    cout << "Enter airport code: " << endl;
+    int option;
+    cout << "1. Search by airport" << endl;
+    cout << "2. Search by city" << endl;
 
-    string airportCode;
-    cin >> airportCode;
+    cin >> option;
 
-    int numCountries = graph.getNumCountriesFliesTo(airportCode);
+    switch (option) {
+        case 1: {
+            cout << "Enter airport code: " << endl;
+            string airportCode;
+            cin >> airportCode;
 
-    if (numCountries == -1) {
-        cout << "Airport not found!" << endl;
-    } else {
-        cout << "The airport " << airportCode << " flies to " << numCountries << " different countries." << endl;
+            int numCountriesAirport = graph.getNumCountriesFliesToByAirport(airportCode);
+
+            if (numCountriesAirport == -1) {
+                cout << "Airport not found!" << endl;
+            } else {
+                cout << "The airport " << airportCode << " flies to " << numCountriesAirport << " different countries." << endl;
+            }
+            break;
+        }
+        case 2: {
+            //Bug on cities with a space on the name
+            cout << "Enter city name: " << endl;
+            string cityName;
+            cin >> cityName;
+
+            cout << "Enter city country: " << endl;
+            string cityCountry;
+            cin >> cityCountry;
+
+            int numCountriesCity = graph.getNumCountriesFliesToByCity(cityName, cityCountry);
+
+            if (numCountriesCity == -1) {
+                cout << "City not found or no flights from its airports!" << endl;
+            } else {
+                cout << "The city " << cityName << " airports fly to " << numCountriesCity << " different countries." << endl;
+            }
+            break;
+        }
+        default:
+            cout << "Invalid input" << endl;
+            break;
     }
 }
 
@@ -395,7 +474,6 @@ void Menu::printTopAirports(){
     int count =0;
 
     auto x = graph.topAirports();
-
 
     if(in >= graph.getAirportTable().size() || in <=0){
         cout << "Invalid input" << endl;

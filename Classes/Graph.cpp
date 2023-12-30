@@ -390,7 +390,7 @@ unordered_map<string, int> Graph::getNumFlightsPerAirline() {
 }
 
 
-int Graph::getNumCountriesFliesTo(const string& airportCode) {
+int Graph::getNumCountriesFliesToByAirport(const string& airportCode) {
     unordered_set<string> countries;
 
     auto port = airportTable.find(airportHash(airportCode));
@@ -410,6 +410,32 @@ int Graph::getNumCountriesFliesTo(const string& airportCode) {
 
     return countries.size();
 }
+
+int Graph::getNumCountriesFliesToByCity(const std::string &cityName, std::string &cityCountry) {
+    unordered_set<string> countries;
+
+    for (const auto& city : cityTable) {
+        if (city.second.getName() == cityName && city.second.getCountry() == cityCountry) {
+            const vector<string>& airportCodes = city.second.getAirportCodes();
+
+            for (const auto& code : airportCodes) {
+                auto port = airportTable.find(airportHash(code));
+                if (port != airportTable.end()) {
+                    const vector<Flight>& flights = port->second.getFlights();
+                    for (const auto& flight : flights) {
+                        auto destPort = airportTable.find(airportHash(flight.getDestCode()));
+                        if (destPort != airportTable.end()) {
+                            countries.insert(destPort->second.getCountryName());
+                        }
+                    }
+                }
+            }
+            break; // No need to continue searching after finding the city
+        }
+    }
+    return countries.size();
+}
+
 
 
 

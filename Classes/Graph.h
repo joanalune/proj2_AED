@@ -56,15 +56,13 @@ public:
 
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
 
-
-
     unordered_map<string, unordered_map<string, int>> getNumFlightsPerCityAirline();
     unordered_map<string, int> getNumFlightsPerAirline();
     unordered_map<string, int> getNumFlightsPerCity();
 
 
-    int getNumCountriesFliesTo(const string& airportCode);
-
+    int getNumCountriesFliesToByAirport(const string& airportCode);
+    int getNumCountriesFliesToByCity(const string& cityName, string& cityCountry);
 };
 
 
