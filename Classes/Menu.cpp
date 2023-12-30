@@ -3,6 +3,7 @@
 #include <set>
 #include <climits>
 #include <sstream>
+#include <algorithm>
 #include "Menu.h"
 
 using namespace std;
@@ -252,9 +253,10 @@ int Menu::runBestFlightsMenu() {
 
         filter filter;
 
-        runBestFlightsFiltersMenu();
+        runBestFlightsFiltersMenu(filter);
 
         printBestFlights(sourceAirports, destAirports, filter);
+        waitForInput();
 
     }
 }
@@ -274,7 +276,7 @@ void Menu::bestFlightsFiltersMenuView() {
 
 }
 
-int Menu::runBestFlightsFiltersMenu(){
+int Menu::runBestFlightsFiltersMenu(filter& f){
     while (true) {
         system("clear");
         bestFlightsFiltersMenuView();
@@ -286,21 +288,21 @@ int Menu::runBestFlightsFiltersMenu(){
         switch (option) {
             case 1:
                 f = readFilterInput(0);
-                break;
+                return 1;
             case 2:
                 cout << "Which airlines would you like to use? Please write them in the format airlinecode1,airlinecode2,..." << endl;
                 f = readFilterInput(1);
-                break;
+                return 1;
             case 3:
                 cout << "Which airlines would you like to avoid? Please write them in the format airlinecode1,airlinecode2,..." << endl;
                 f = readFilterInput(2);
-                break;
+                return 1;
             case 4:
-                f = readFilterInput(4);
-                break;
+                f = readFilterInput(3);
+                return 1;
             default:
                 cout << "Invalid input" << endl;
-                return 0;
+                break;
         }
     }
 
@@ -557,20 +559,58 @@ void Menu::printBestFlights(vector<string> sources, vector<string> destinations,
     vector<vector<string>> res = {};      // best trips for all source-destination pairs
     vector<vector<string>> partRes = {};  // best trips for a single source-destination pair
 
+    auto resEnd = res.end();
+
 
     // get all best trips between each source and destination (some trips will not be optimal in comparison with different source-destination pairs)
     for (string s : sources) {
         for (string d : destinations) {
-            partRes = graph.getBestTrips(s, d, tripBestDist);
+            partRes = graph.getBestTrips(s, d, tripBestDist, filter);
             if (bestDist > tripBestDist) bestDist = tripBestDist;
             res.insert(res.end(), partRes.begin(), partRes.end());
         }
     }
 
     // remove all "best trips" that are too big; see last loop comment
-    for (auto it = res.begin(); it != res.end(); it++) {
-        if (it->size() > bestDist + bestDist-1) res.erase(it);
+    resEnd = remove_if(res.begin(), res.end(), [bestDist] (const vector<string>& p) {
+        return (p.size() > bestDist + bestDist-1);
+    });
+
+    // check minimize airline changes filter
+    if (filter.type == 3) {
+        int minDifAirlines = INT_MAX;
+        set<string> airlines = {};
+
+        //find minDifAirlines
+        for (const vector<string>& path : res) {
+            airlines.clear();
+
+            for (int i = 1; i < path.size(); i+=2) {
+                cout << graph.getAirlineTable().at(graph.airlineHash(path[i])).getCallSign() << endl;
+                airlines.insert(path[i]);
+            }
+            cout << minDifAirlines << endl;
+            if (airlines.size() < minDifAirlines) minDifAirlines = airlines.size();
+        }
+
+        //remove ones that more different airlines than minDifAirlines
+        resEnd = remove_if(res.begin(), resEnd, [minDifAirlines] (const vector<string>& p) {
+            set<string> al = {};  //airlines in each path
+            for (int i = 1; i < p.size(); i+=2) {
+                al.insert(p[i]);
+            }
+            return al.size() > minDifAirlines;
+        });
     }
+    /*
+    for (auto it = res.begin(); it != resEnd; it++) {
+        for (int i = it->size() - 1; i >= 1; i-=2) {
+            cout << it->at(i) << " --(" << it->at(i-1) << ")-> ";
+        }
+        cout << it->at(0);
+        cout << "\n";
+    }
+    */
 
     for (auto path : res) {
         for (int i = path.size() - 1; i >= 1; i-=2) {
@@ -580,10 +620,13 @@ void Menu::printBestFlights(vector<string> sources, vector<string> destinations,
         cout << "\n";
     }
 
+
     cout << "best trip stops:" << bestDist << '\n';
 }
 
 filter Menu::readFilterInput(int i) {
+
+    if (i == 0 || i == 3) return {i, set<string>()};
     string codes;
     cin >> codes;
 
