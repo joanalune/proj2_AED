@@ -34,10 +34,7 @@ public:
     unordered_set<string> essentialAirports();
     vector<string> getAirportCode(string &input,string& mode);
 
-    struct filter {
-        int type;
-        vector<string> codes;
-    };
+
     vector<vector<string>> getBestTrips(string source, string destination, int& optimalDist);
 
 
@@ -73,6 +70,9 @@ public:
 
 };
 
-
+struct filter {
+    int type;
+    set<string> codes;
+};
 
 #endif //PROJ2_AED_GRAPH_H

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <set>
+#include <sstream>
 #include "Menu.h"
 
 using namespace std;
@@ -275,19 +276,22 @@ int Menu::runBestFlightsFiltersMenu(){
 
         int option;
         cin >> option;
+        filter f;
 
         switch (option) {
             case 1:
-                //no filters func
+                f = readFilterInput(0);
                 break;
             case 2:
-                //whitelist func
+                cout << "Which airlines would you like to use? Please write them in the format airlinecode1,airlinecode2,..." << endl;
+                f = readFilterInput(1);
                 break;
             case 3:
-                //blacklistfunc
+                cout << "Which airlines would you like to avoid? Please write them in the format airlinecode1,airlinecode2,..." << endl;
+                f = readFilterInput(2);
                 break;
             case 4:
-                //minimize airlines func
+                f = readFilterInput(4);
                 break;
             default:
                 cout << "Invalid input" << endl;
@@ -431,4 +435,27 @@ void Menu::printBestFlights() {
 
     cout << "best trip stops:" << bestDist << '\n';
 }
+
+filter Menu::readFilterInput(int i) {
+    string codes;
+    cin >> codes;
+
+    std::getline(std::cin, codes);
+
+    istringstream ss(codes);
+    string code;
+
+    set<string> code_set;
+
+    while (getline(ss, code, ',')) {
+        code_set.insert(code);
+    }
+
+    filter f = {i,code_set};
+
+    return f ;
+
+}
+
+
 
