@@ -15,6 +15,7 @@ class Airport {
     double longitude;
 
     vector<Flight> flights;  // list of outgoing flights
+
     bool visited;          // auxiliary field
     bool processing;       // auxiliary field
     int num;               // auxiliary field
@@ -25,6 +26,8 @@ class Airport {
 
     void addFlight(Flight flight);
     bool removeEdgeTo(Airport *d);
+
+
 public:
 
 

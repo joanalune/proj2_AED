@@ -1,9 +1,11 @@
 #ifndef PROJ2_AED_GRAPH_H
 #define PROJ2_AED_GRAPH_H
 
-#include "string.h"
-#include "Airport.h"
 
+#include "Airport.h"
+#include "City.h"
+
+#include <cstring>
 #include <cstddef>
 #include <vector>
 #include <queue>
@@ -66,10 +68,16 @@ public:
 
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
 
+    unordered_map<string, unordered_map<string, int>> getNumOutFlightsPerCityAirline();
+    unordered_map<string, unordered_map<string, int>> getNumInFlightsPerCityAirline();
+    unordered_map<string, int> getNumFlightsPerAirline();
+    unordered_map<string, int> getNumOutFlightsPerCity();
+    unordered_map<string, int> getNumInFlightsPerCity();
 
+
+    int getNumCountriesFliesToByAirport(const string& airportCode);
+    int getNumCountriesFliesToByCity(const string& cityName, string& cityCountry);
     vector<string> nodesAtDistanceBFS(Airport &source, int k);
-
-
 
 
 };
