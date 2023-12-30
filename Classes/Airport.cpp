@@ -1,7 +1,6 @@
-#include <set>
-#include <iostream>
 #include "Airport.h"
 
+#include <set>
 
 Airport::Airport(string code, string name, string cityName, string countryName, double latitude, double longitude): code(code), name(name),
                                                                                           cityName(cityName), countryName(countryName), latitude(latitude), longitude(longitude) {}

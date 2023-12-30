@@ -1,10 +1,11 @@
 #ifndef PROJ2_AED_GRAPH_H
 #define PROJ2_AED_GRAPH_H
 
-#include "string.h"
-#include "Airport.h"
-#include "city.h"
 
+#include "Airport.h"
+#include "City.h"
+
+#include <cstring>
 #include <cstddef>
 #include <vector>
 #include <queue>
@@ -16,10 +17,7 @@
 
 using namespace std;
 
-struct filter {
-    int type;
-    vector<string> codes;
-};
+
 
 class Graph {
     unordered_map<int, Airport> airportTable;
