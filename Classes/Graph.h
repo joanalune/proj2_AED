@@ -16,8 +16,8 @@
 using namespace std;
 
 struct filter {
-    int type;
-    vector<string> codes;
+    int type;         // 0 - no filter; 1 - blacklist; 2 - whitelist; 3 - minimize airline changes. 1 and 2 are handled in getBestTrips (Graph class), 3 is handled in printBestFlights (Menu class)
+    set<string> codes;
 };
 
 class Graph {
@@ -39,7 +39,7 @@ public:
     vector<string> getAirportCode(string &input,string& mode);
 
 
-    vector<vector<string>> getBestTrips(string source, string destination, int& optimalDist);
+    vector<vector<string>> getBestTrips(string source, string destination, int& optimalDist, const filter& filter);
 
 
     bool addAirport(const Airport& airport);
@@ -74,9 +74,5 @@ public:
 
 };
 
-struct filter {
-    int type;
-    set<string> codes;
-};
 
 #endif //PROJ2_AED_GRAPH_H

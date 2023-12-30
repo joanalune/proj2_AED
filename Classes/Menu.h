@@ -18,7 +18,7 @@ public:
     int runMainMenu();
     int runStatisticsMenu();
     int runBestFlightsMenu();
-    int runBestFlightsFiltersMenu();
+    int runBestFlightsFiltersMenu(filter &filter);
 
     void printNrAirportsFlights();
     void printNrFlightsSpecifiedAirport();

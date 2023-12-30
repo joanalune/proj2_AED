@@ -371,7 +371,7 @@ vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a 
     return res;
 }
 
-vector<vector<string>> Graph::getBestTrips(string source, string destination, int& optimalDist) {
+vector<vector<string>> Graph::getBestTrips(string source, string destination, int& optimalDist, const filter& filter) {
     vector<vector<string>> optimalPaths{};
 
     vector<string> optimalPath;
@@ -398,6 +398,19 @@ vector<vector<string>> Graph::getBestTrips(string source, string destination, in
             q.pop();
 
             for (auto &e: airportTable.at(airportHash(a)).getFlights()) {
+
+                //check airline blacklist/whitelist
+                switch (filter.type) {
+                    case 1:
+                        //blacklist
+                        if (filter.codes.find(e.getAirlineCode()) != filter.codes.end()) continue;
+                        break;
+                    case 2:
+                        //whitelist
+                        if (filter.codes.find(e.getAirlineCode()) == filter.codes.end()) continue;
+                        break;
+                }
+
                 string dest = e.getDestCode();
                 if (airportTable.at(airportHash(dest)).isVisited() && dest != destination) continue;
                 airportTable.at(airportHash(dest)).setLastAirport(a);
@@ -429,6 +442,7 @@ vector<vector<string>> Graph::getBestTrips(string source, string destination, in
 
     return optimalPaths;
 }
+
 double Graph::calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     const double radiusOfEarth = 6371.0;
 
