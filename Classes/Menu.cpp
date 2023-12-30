@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <set>
+#include <sstream>
 #include "Menu.h"
 
 using namespace std;
@@ -69,7 +70,7 @@ void Menu::statisticsMenuView() {
     cout    << "2. Number of flights out of specified airport" << endl; //also print nr of airlines
     cout    << "3. Number of flights per city/airline" << endl;
     cout    << "4. Number of different countries a specified airport/city flies to" << endl;
-    cout    << "5. Number of reachable destinations available for specified airport" << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
+    cout    << "5. Number of reachable destinations available for specified airport in a maximum number of X stops." << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
     cout    << "6. Flight trips with the greatest number of stops" << endl;
     cout    << "7. Top X airports with the greatest flight capacity" << endl;
     cout    << "8. Essential airports for circulation capability" << endl; //articulation points
@@ -103,7 +104,7 @@ int Menu::runStatisticsMenu() {
                 waitForInput();
                 break;
             case 5:
-                //printNrDestinationsAirport();
+                printNrDestinationsAirport();
                 waitForInput();
                 break;
             case 6:
@@ -278,19 +279,22 @@ int Menu::runBestFlightsFiltersMenu(){
 
         int option;
         cin >> option;
+        filter f;
 
         switch (option) {
             case 1:
-                //no filters func
+                f = readFilterInput(0);
                 break;
             case 2:
-                //whitelist func
+                cout << "Which airlines would you like to use? Please write them in the format airlinecode1,airlinecode2,..." << endl;
+                f = readFilterInput(1);
                 break;
             case 3:
-                //blacklistfunc
+                cout << "Which airlines would you like to avoid? Please write them in the format airlinecode1,airlinecode2,..." << endl;
+                f = readFilterInput(2);
                 break;
             case 4:
-                //minimize airlines func
+                f = readFilterInput(4);
                 break;
             default:
                 cout << "Invalid input" << endl;
@@ -336,6 +340,33 @@ void Menu::printNrFlightsSpecifiedAirport() {
         cout << graph.getAirportTable().at(findByCode).getName() << " has " << graph.getAirportTable().at(findByCode).getOutDegree()<<
         " flights outgoing, from "<<graph.getAirportTable().at(findByCode).getNrDifferentAirlines()<<" different airlines."<<endl;
     }
+}
+
+void Menu::printNrDestinationsAirport() {
+    vector<string> res;
+    cout << "Enter airport code: " << endl;
+
+    string airportCode;
+    cin >> airportCode;
+
+    cout << "Enter the maximum number of stops: " << endl;
+    int in;
+    cin >> in;
+
+    if(graph.getAirportTable().find(graph.airportHash(airportCode)) == graph.getAirportTable().end() ){
+        cout << "Airport not found!" << endl;
+        return;
+    }
+
+    res = graph.nodesAtDistanceBFS(graph.getAirportTable().at(graph.airportHash(airportCode)),in);
+
+    int differentCities = graph.calculateDifferentCities(res);
+    int differentCountries = graph.calculateDifferentCountries(res);
+
+
+
+    cout << airportCode << " can reach " << res.size() << " airports, " << differentCities <<" cities and " << differentCountries << " countries" " in a maximum number of " << in <<" stops." << endl;
+
 }
 
 
@@ -480,10 +511,10 @@ void Menu::printTopAirports(){
     }
 
     else{
-        for(auto a : x){
+        for(auto& a : x){
             if(count == in){break;}
             count++;
-            cout << count << ". "<< a.getName() << ": "<< a.getFlights().size() << " flights." << endl;
+            cout << count << ". "<< a.getName() << ": "<< a.getInDegree() << " flights incoming and "<< a.getOutDegree() << " flights outgoing. " << a.getOutDegree() + a.getInDegree() << " flights total."<< endl;
         }
     }
 
@@ -512,4 +543,49 @@ void Menu::printEssentialAirports(){
         cout << a<< endl;
     }
 }
+
+void Menu::printBestFlights() {
+    string source;
+    string destination;
+
+    cout << "\nsource?\n";
+    cin >> source;
+    cout << "\ndestination?\n";
+    cin >> destination;
+
+    int bestDist;
+    vector<vector<string>> res = graph.getBestTrips(source, destination, bestDist);
+
+    for (auto path : res) {
+        for (int i = path.size() - 1; i >= 0; i--) {
+            cout << path[i] << "  ";
+        }
+        cout << "\n";
+    }
+
+    cout << "best trip stops:" << bestDist << '\n';
+}
+
+filter Menu::readFilterInput(int i) {
+    string codes;
+    cin >> codes;
+
+    std::getline(std::cin, codes);
+
+    istringstream ss(codes);
+    string code;
+
+    set<string> code_set;
+
+    while (getline(ss, code, ',')) {
+        code_set.insert(code);
+    }
+
+    filter f = {i,code_set};
+
+    return f ;
+
+}
+
+
 

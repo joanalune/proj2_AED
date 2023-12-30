@@ -1,8 +1,9 @@
 #include <set>
-#include <iostream>
 #include <unordered_set>
+#include <climits>
 #include <sstream>
 #include <cmath>
+#include <iostream>
 #include "Graph.h"
 
 #pragma clang diagnostic push
@@ -65,60 +66,11 @@ bool Graph::addFlight(const string& source, const Flight& flight) {
         || airlineTable.find(alHash) == airlineTable.end()) return false;
 
     airportTable.at(sapHash).addFlight(flight);
+    airportTable.at(dapHash).increaseInDegree();
+
     return true;
 }
 
-
-/*
- * Removes an edge from a graph (this).
- * The edge is identified by the source (sourc) and destination (dest) contents.
- * Returns true if successful, and false if such edge does not exist.
-
-
-bool Graph::removeEdge(const string &sourc, const string &dest) {
-    auto v1 = findVertex(sourc);
-    auto v2 = findVertex(dest);
-    if (v1 == NULL || v2 == NULL)
-        return false;
-    return v1->removeEdgeTo(v2);
-}
-
-
- * Auxiliary function to remove an outgoing edge (with a given destination (d))
- * from a vertex (this).
- * Returns true if successful, and false if such edge does not exist.
-
-
-bool Airport::removeEdgeTo(Airport *d) {
-    for (auto it = adj.begin(); it != adj.end(); it++)
-        if (it->dest  == d) {
-            adj.erase(it);
-            return true;
-        }
-    return false;
-}
-
-
- *  Removes a vertex with a given content (in) from a graph (this), and
- *  all outgoing and incoming edges.
- *  Returns true if successful, and false if such vertex does not exist.
-
-
-
-
-bool Graph::removeVertex(const string &in) {
-    for (auto it = vertexSet.begin(); it != vertexSet.end(); it++)
-        if ((*it)->airport  == in) {
-            auto v = *it;
-            vertexSet.erase(it);
-            for (auto u : vertexSet)
-                u->removeEdgeTo(v);
-            delete v;
-            return true;
-        }
-    return false;
-}
-*/
 
 /****************** DFS ********************/
 /*
@@ -523,6 +475,62 @@ vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a 
     return res;
 }
 
+vector<vector<string>> Graph::getBestTrips(string source, string destination, int& optimalDist) {
+    vector<vector<string>> optimalPaths{};
+
+    vector<string> optimalPath;
+
+    queue<string> q;
+
+    optimalDist = INT_MAX;
+
+    for (auto &v: airportTable)
+        v.second.setVisited(false);
+
+    q.push(source);
+    airportTable.at(airportHash(source)).setVisited(true);
+
+
+    int stops = 0;
+    int qSize;
+
+    while (!q.empty() && stops < optimalDist) {
+        qSize = q.size();
+
+        for (int i = 0; i < qSize; i++) {
+            auto a = q.front();
+            q.pop();
+
+            for (auto &e: airportTable.at(airportHash(a)).getFlights()) {
+                string dest = e.getDestCode();
+                if (airportTable.at(airportHash(dest)).isVisited() && dest != destination) continue;
+                airportTable.at(airportHash(dest)).setLast(a);
+
+                if (dest == destination) {
+                    optimalDist = stops;
+                    optimalPath = vector<string>();
+                    string pathFinder = dest;  // holds consecutively (backwards) each airport code that constitutes a path;
+
+                    while (pathFinder != source) {
+                        optimalPath.push_back(pathFinder);
+                        pathFinder = airportTable.at(airportHash(pathFinder)).getLast();
+                    }
+                    optimalPath.push_back(pathFinder);  // add source;
+
+                    optimalPaths.push_back(optimalPath);
+                }
+                if (!airportTable.at(airportHash(dest)).isVisited()) {
+                    q.push(dest);
+                    airportTable.at(airportHash(dest)).setVisited(true);
+                }
+            }
+        }
+        stops++;
+
+    }
+
+    return optimalPaths;
+}
 double Graph::calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     const double radiusOfEarth = 6371.0;
 
@@ -538,4 +546,57 @@ double Graph::calculateDistance(double lat1, double lon1, double lat2, double lo
 
     return distance;
 }
-#pragma clang diagnostic pop
+
+vector<string> Graph::nodesAtDistanceBFS(Airport &source, int k) {
+    vector<string> res;
+    queue<string> q;
+
+    for (auto &a: airportTable) {
+        a.second.setVisited(false);
+    }
+
+    int level = 0;
+
+    q.push(source.getCode());
+
+    while (!q.empty() && level <= k) {
+        auto size = q.size();
+        for (int i = 0; i < size; i++){
+            auto v = q.front();
+            airportTable.at(airportHash(q.front())).setVisited(true);
+
+            for (auto f: airportTable.at(airportHash(q.front())).getFlights()) {
+                if (!airportTable.at(airportHash(f.getDestCode())).isVisited()) {
+                    airportTable.at(airportHash(f.getDestCode())).setVisited(true);
+                    q.push(f.getDestCode());
+
+                    res.push_back(f.getDestCode());
+
+                }
+
+            }
+            q.pop();
+
+
+        }
+        level++;
+    }
+
+    return res;
+}
+
+int Graph::calculateDifferentCities(vector<string>& v){
+    set<string> cities;
+    for(auto s : v){
+        cities.insert(airportTable.at(airportHash(s)).getCityName());
+    }
+    return cities.size();
+}
+
+int Graph::calculateDifferentCountries(vector<string>& v){
+    set<string> countries;
+    for(auto s : v){
+        countries.insert(airportTable.at(airportHash(s)).getCountryName());
+    }
+    return countries.size();
+}

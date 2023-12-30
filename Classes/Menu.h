@@ -22,9 +22,13 @@ public:
 
     void printNrAirportsFlights();
     void printNrFlightsSpecifiedAirport();
+    void printNrDestinationsAirport();
+
     void printTopAirports();
     void printGreatestNumberStops();
     void printEssentialAirports();
+    void printBestFlights();
+
 
     void printNrFlightsCity();
     void printNrFlightsAirline();
@@ -35,6 +39,7 @@ public:
     void waitForInput() const;
 
 
+    filter readFilterInput(int i);
 };
 
 #endif //PROJ2_AED_MENU_H

@@ -18,15 +18,18 @@ class Airport {
 
     bool visited;          // auxiliary field
     bool processing;       // auxiliary field
-    int inDegree;          // auxiliary field
     int num;               // auxiliary field
     int low;               // auxiliary field
+    string last;           // auxiliary field; stores key to airport visited previously in bfs
+    int inDegree=0;
 
     void addFlight(Flight flight);
     bool removeEdgeTo(Airport *d);
 
 
 public:
+
+
     Airport(string airportCode, string name, string cityName, string countryName, double latitude, double longitude);
     string getName() const;
     string getCode() const;
@@ -45,21 +48,26 @@ public:
     void setProcessing(bool p);
     const vector<Flight> &getFlights() const;
 
-    int getInDegree() const;
     int getOutDegree() const;
     int getNrDifferentAirlines() const;
-    void setInDegree(int indegree);
-    int getInDegreePort(const string& airportCode) const;
-
+    string getLast() const;
+    void setLast(const string& last);
+    void setInDegree(int inDegree);
+    int getInDegree() const;
+    void increaseInDegree();
 
     int getNum() const;
-    void setNum(int num);
     int getLow() const;
+    void setNum(int num);
     void setLow(int low);
+
 
     bool operator<(Airport b) const;
 
     friend class Graph;
+
+
+
 };
 
 

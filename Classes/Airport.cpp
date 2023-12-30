@@ -1,4 +1,5 @@
 #include <set>
+#include <iostream>
 #include "Airport.h"
 
 
@@ -28,15 +29,6 @@ void Airport::setProcessing(bool p) {
 
 bool Airport::isVisited() const {
     return visited;
-}
-
-
-int Airport::getInDegree() const {
-    return inDegree;
-}
-
-void Airport::setInDegree(int inDegree) {
-    Airport::inDegree = inDegree;
 }
 
 
@@ -97,6 +89,14 @@ int Airport::getOutDegree() const {
     return flights.size();
 }
 
+void Airport::setInDegree(int in) {
+    Airport::inDegree = in;
+}
+
+int Airport::getInDegree() const{
+    return inDegree;
+}
+
 int Airport::getNrDifferentAirlines() const {
     set<string> airlines;
 
@@ -109,4 +109,16 @@ int Airport::getNrDifferentAirlines() const {
 
 bool Airport::operator<(Airport b) const{
     return this->flights.size() > b.flights.size();
+}
+
+string Airport::getLast() const {
+    return last;
+}
+
+void Airport::setLast(const string& last) {
+    this->last = last;
+}
+
+void Airport::increaseInDegree() {
+    inDegree++;
 }
