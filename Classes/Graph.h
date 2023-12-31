@@ -28,7 +28,6 @@ class Graph {
     unordered_map<int, Airline> airlineTable;
 
 
-    void dfsVisit(string apCode, vector<string> & res);
 public:
     Graph();
 
@@ -57,6 +56,8 @@ public:
     vector<string> dfs();
     vector<string> dfs(const string & source);
     vector<string> bfs(const string &source);
+    void dfsVisit(string apCode, vector<string> & res);
+
 
     double calculateDistance(double lat1, double lon1, double lat2, double lon2);
     int calculateDifferentCities(vector<string> &v);
