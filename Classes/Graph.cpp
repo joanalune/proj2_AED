@@ -31,12 +31,6 @@ unordered_map<int, Airport> Graph::getAirportTable() const {
     return airportTable;
 }
 
-
-/*
- *  Adds a vertex with a given content or airport (in) to a graph (this).
- *  Returns true if successful, and false if a vertex with that content already exists.
- */
-
 bool Graph::addAirport(const Airport& airport) {
     int apHash = airportHash(airport.getCode());
     if (airportTable.find(apHash) != airportTable.end()) return false;
@@ -51,13 +45,6 @@ bool Graph::addAirport(const Airport& airport) {
     return true;
 }
 
-
-/*
- * Adds an edge to a graph (this), given the contents of the source and
- * destination vertices and the edge weight (w).
- * Returns true if successful, and false if the source or destination vertex does not exist.
- */
-
 bool Graph::addFlight(const string& source, const Flight& flight) {
     int sapHash = airportHash(source);
     int dapHash = airportHash(flight.getDestCode());
@@ -70,14 +57,6 @@ bool Graph::addFlight(const string& source, const Flight& flight) {
 
     return true;
 }
-
-
-/****************** DFS ********************/
-/*
- * Performs a depth-first search (dfs) traversal in a graph (this).
- * Returns a vector with the contents of the vertices by dfs order.
- * Follows the algorithm described in theoretical classes.
- */
 
 vector<string> Graph::dfs() {
     vector<string> res;
@@ -92,11 +71,6 @@ vector<string> Graph::dfs() {
     return res;
 }
 
-/*
- * Auxiliary function that visits a vertex (v) and its adjacent, recursively.
- * Updates a parameter with the list of visited node contents.
- */
-
 void Graph::dfsVisit(string apCode, vector<string> & res) {
     int apHash = airportHash(apCode);
     airportTable.at(apHash).setVisited(true);
@@ -110,14 +84,6 @@ void Graph::dfsVisit(string apCode, vector<string> & res) {
     }
 }
 
-
-/****************** DFS ********************/
-/*
- * Performs a depth-first search (dfs) in a graph (this).
- * Returns a vector with the contents of the vertices by dfs order,
- * from the source node.
- */
-
 vector<string> Graph::dfs(const string & source) {
     vector<string> res;
 
@@ -128,13 +94,6 @@ vector<string> Graph::dfs(const string & source) {
     return res;
 }
 
-
-/****************** BFS ********************/
-/*
- * Performs a breadth-first search (bfs) in a graph (this), starting
- * from the vertex with the given source contents (source).
- * Returns a vector with the contents of the vertices by bfs order.
- */
 
 vector<string> Graph::bfs(const string & source) {
     vector<string> res;
