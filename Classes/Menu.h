@@ -17,7 +17,7 @@ public:
      */
     void mainMenuView();
     /**
-     * Prints the statistcs menu
+     * Prints the statistics menu
      */
     void statisticsMenuView();
     /**
@@ -41,7 +41,7 @@ public:
      */
     int runBestFlightsMenu();
     /**
-     * Reads the filter selected in the best flights menu(???)
+     * Asks the user which filter they want to use
      * @param filter
      * @return
      */
@@ -60,7 +60,7 @@ public:
     void printNrDestinationsAirport();
     /**
      * Prints the top X airports with the most flights (outgoing + incoming), calls the graph functions topAirports(), getInDegree() and getOutDegree()
-     * @details Time Complexity: O(n), n being the number of airports the user wants printed + alguma cena provavlmente
+     * @details Time Complexity: O(n) + O(i * log i), n being the number of airports the user wants printed, i being the size of the graph's airport table
      */
     void printTopAirports();
     /**
@@ -68,22 +68,22 @@ public:
      */
     void printGreatestNumberStops();
     /**
-     * Prints the essential airports for the flight system
+     * Prints the essential airports for the flight system. calls the graph function essential airports
      */
     void printEssentialAirports();
     /**
-     * ????????
+     * Prints the best flights from source to destination, depending on the filter
      * @param sources
      * @param destinations
      * @param filter
      */
     void printBestFlights(vector<string> sources, vector<string> destinations, filter filter);
     /**
-     *
+     * Prints the number of flights by city or airline
      */
     void printNrFlightsCityAirline();
     /**
-     *
+     * Prints the number of different countries a city/airport flies to
      */
     void printNrDifferentCountries();
     /**
@@ -91,7 +91,11 @@ public:
      */
     void waitForInput() const;
 
-
+    /**
+     * Reads user input
+     * @param i
+     * @return filter accordingly
+     */
     filter readFilterInput(int i);
 };
 

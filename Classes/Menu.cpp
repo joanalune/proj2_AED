@@ -546,7 +546,7 @@ void Menu::printEssentialAirports(){
 
     cout << "The essential airports "<< '(' << res.size() <<')'<<" are: " << endl;
 
-    for(auto a : res){     * @details Time complexity:
+    for(auto a : res){
 
         cout << a<< endl;
     }
