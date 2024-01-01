@@ -88,10 +88,6 @@ int Airport::getOutDegree() const {
     return flights.size();
 }
 
-void Airport::setInDegree(int in) {
-    Airport::inDegree = in;
-}
-
 int Airport::getInDegree() const{
     return inDegree;
 }

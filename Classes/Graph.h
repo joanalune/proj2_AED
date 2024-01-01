@@ -88,7 +88,8 @@ public:
      * @param optimalDist
      * @param filter
      * @return updated optimaldist and vector of vectors of [airportcode1, airlinecode1,airportcode2,airlinecode2]
-     * @details Time complexity:
+     * @details Time complexity: O(m * n * k), where n is number of airports, m is the average number of flights per airport, and k the number of
+     * stops in the optimal path
      */
     vector<vector<string>> getBestTrips(string source, string destination, int& optimalDist, const filter& filter);
 

@@ -95,7 +95,6 @@ public:
     * @param flight
     */
     void addFlight(Flight flight);
-    bool removeEdgeTo(Airport *d);
     /**
      * @return the number of outgoing flights
      */
@@ -123,7 +122,6 @@ public:
      * @param lastAirline
      */
     void setLastAirline(const string& lastAirline);
-    void setInDegree(int inDegree);
     /**
      * @return the number of incoming flights
      */
