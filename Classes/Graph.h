@@ -29,6 +29,9 @@ class Graph {
 
 
 public:
+    /**
+     * Default constructor
+     */
     Graph();
 
     int getNumAirport() const;

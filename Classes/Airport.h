@@ -87,12 +87,13 @@ public:
      */
     void setProcessing(bool p);
     /**
-     * @return a vector of all the airport's outgoing flights
+    * @return a vector of all the airport's outgoing flights
+    */
     const vector<Flight> &getFlights() const;
     /**
-     * Adds a flight to the airport's outgoing flights vector
-     * @param flight
-     */
+    * Adds a flight to the airport's outgoing flights vector
+    * @param flight
+    */
     void addFlight(Flight flight);
     bool removeEdgeTo(Airport *d);
     /**
