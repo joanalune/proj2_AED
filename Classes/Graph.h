@@ -18,7 +18,7 @@
 using namespace std;
 
 struct filter {
-    int type;         // 0 - no filter; 1 - blacklist; 2 - whitelist; 3 - minimize airline changes. 1 and 2 are handled in getBestTrips (Graph class), 3 is handled in printBestFlights (Menu class)
+    int type;         // 0 - no filter; 1 - whitelist; 2 - blacklist; 3 - minimize airline changes. 1 and 2 are handled in getBestTrips (Graph class), 3 is handled in printBestFlights (Menu class)
     set<string> codes;
 };
 
@@ -186,17 +186,17 @@ public:
      */
     unordered_map<string, unordered_map<string, int>> getNumInFlightsPerCityAirline();
     /**
-     * @return a map in the format <airline,nrflights>
+     * @return a map in the format <airline,nrFlights>
      */
     unordered_map<string, int> getNumFlightsPerAirline();
     /**
-     * @return a map in the format <cityName, outgoingFlights>
+     * @return a map in the format <cityName,<cityName,nrFlights (outgoing)>
      */
-    unordered_map<string, int> getNumOutFlightsPerCity();
+    unordered_map<string, unordered_map<string, int>> getNumOutFlightsPerCity();
     /**
-     * @return a map in the format <cityName, incomingFlights>
+     * @return a map in the format <cityName,<cityName,nrFlights (incoming)>
      */
-    unordered_map<string, int> getNumInFlightsPerCity();
+    unordered_map<string, unordered_map<string, int>> getNumInFlightsPerCity();
     /**
      * @param airportCode
      * @return the number of countries an airport flies to

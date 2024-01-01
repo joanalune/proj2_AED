@@ -70,7 +70,7 @@ void Menu::statisticsMenuView() {
     cout    << "What would you like to know?" << endl;
     cout    << "1. Global number of airports/flights"<< endl;
     cout    << "2. Number of flights out of specified airport" << endl; //also print nr of airlines
-    cout    << "3. Number of flights per city/airline" << endl;
+    cout    << "3. Number of flights per city/airline or airport" << endl;
     cout    << "4. Number of different countries a specified airport/city flies to" << endl;
     cout    << "5. Number of reachable destinations available for specified airport in a maximum number of X stops." << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
     cout    << "6. Flight trips with the greatest number of stops" << endl;
@@ -283,7 +283,6 @@ int Menu::runBestFlightsFiltersMenu(filter& f){
 
         int option;
         cin >> option;
-        filter f;
 
         switch (option) {
             case 1:
@@ -373,15 +372,15 @@ void Menu::printNrDestinationsAirport() {
 
 }
 
-
 void Menu::printNrFlightsCityAirline(){
     int option;
     cout << "1. Search outgoing flights by city/airline " << endl;
     cout << "2. Search incoming flights by city/airline" << endl;
-    cout << "3. Search flights by airline" << endl;
-    cout << "4. Search flights by city" << endl;
-    cout << "5. Search outgoing flights by airport" << endl;
-    cout << "6. Search incoming flights by airport" << endl;
+    cout << "3. Search outgoing flights by city " << endl;
+    cout << "4. Search incoming flights by city" << endl;
+    cout << "5. Search flights by airline" << endl;
+    cout << "6. Search outgoing flights by airport" << endl;
+    cout << "7. Search incoming flights by airport" << endl;
 
     cin >> option;
 
@@ -389,29 +388,69 @@ void Menu::printNrFlightsCityAirline(){
         case 1: {
             unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumOutFlightsPerCityAirline();
             cout << "Number of outgoing flights per City/Airline:" << endl;
+            int total=0;
 
             for(const auto& city : flightsPerCityAirline){
                 cout << "City: " << city.first << endl;
                 for(const auto& airline : city.second){
                     cout << "   Airline: " << airline.first << " -Outgoing flights: " << airline.second << endl;
+                    total += airline.second;
                 }
+                cout << "   Total outgoing flights: " << total << endl;
+                total=0;
             }
             break;
         }
         case 2: {
             unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumInFlightsPerCityAirline();
             cout << "Number of outgoing flights per City/Airline:" << endl;
+            int total=0;
 
             for(const auto& city : flightsPerCityAirline){
                 cout << "City: " << city.first << endl;
                 for(const auto& airline : city.second){
                     cout << "   Airline: " << airline.first << " -Incoming flights: " << airline.second << endl;
+                    total += airline.second;
                 }
+                cout << "   Total incoming flights: " << total << endl;
+                total=0;
             }
 
             break;
         }
         case 3: {
+            unordered_map<string, unordered_map<string, int>> flightsPerCity = graph.getNumOutFlightsPerCity();
+            cout << "Number of outgoing flights per City:" << endl;
+            int total=0;
+
+            for (const auto& city : flightsPerCity) {
+                cout << "City: " << city.first << endl;
+                for (const auto& destination : city.second) {
+                    cout << "   Destination City: " << destination.first << " - Outgoing flights: " << destination.second << endl;
+                    total += destination.second;
+                }
+                cout << "   Total outgoing flights: " << total << endl;
+                total=0;
+            }
+            break;
+        }
+        case 4: {
+            unordered_map<string, unordered_map<string, int>> flightsPerCity = graph.getNumInFlightsPerCity();
+            cout << "Number of incoming flights per City:" << endl;
+            int total=0;
+
+            for (const auto& city : flightsPerCity) {
+                cout << "City: " << city.first << endl;
+                for (const auto& sourceCity : city.second) {
+                    cout << "   Source City: " << sourceCity.first << " - Incoming flights: " << sourceCity.second << endl;
+                    total += sourceCity.second;
+                }
+                cout << "   Total incoming flights: " << total << endl;
+                total=0;
+            }
+            break;
+        }
+        case 5: {
             unordered_map<string, int> flightsPerAirline = graph.getNumFlightsPerAirline();
             cout << "Number of flights per airline:" << endl;
 
@@ -420,20 +459,7 @@ void Menu::printNrFlightsCityAirline(){
             }
             break;
         }
-        case 4: {
-            //--- total de voos por cidade ---
-            //--- funçoes abaixo retornam a mesma coisa --- algum erro c in e out degree
-            //OUT->getNumOutFlightsPerCity();   IN->getNumInFlightsPerCity();
-            unordered_map<string, int> flightsPerCity = graph.getNumOutFlightsPerCity();
-
-            cout << "Number of flights per city:" << endl;
-            for(const auto& pair : flightsPerCity){
-                cout <<"City: "<< pair.first << " -Flights: " << pair.second << endl;
-            }
-            break;
-
-        }
-        case 5: {
+        case 6: {
             cout << "Number of outgoing flights per airport:" << endl;
 
             for(const auto& airport : graph.getAirportTable()){
@@ -442,7 +468,7 @@ void Menu::printNrFlightsCityAirline(){
             }
             break;
         }
-        case 6: {
+        case 7: {
             cout << "Number of incoming flights per airport:" << endl;
 
             for(const auto& airport : graph.getAirportTable()){
@@ -562,8 +588,8 @@ void Menu::printEssentialAirports(){
 
 void Menu::printBestFlights(vector<string> sources, vector<string> destinations, filter filter) {
 
-    int tripBestDist;
-    int bestDist = INT_MAX;
+    int tripBestStops;
+    int bestStops = INT_MAX;
 
     vector<vector<string>> res = {};      // best trips for all source-destination pairs
     vector<vector<string>> partRes = {};  // best trips for a single source-destination pair
@@ -574,16 +600,18 @@ void Menu::printBestFlights(vector<string> sources, vector<string> destinations,
     // get all best trips between each source and destination (some trips will not be optimal in comparison with different source-destination pairs)
     for (string s : sources) {
         for (string d : destinations) {
-            partRes = graph.getBestTrips(s, d, tripBestDist, filter);
-            if (bestDist > tripBestDist) bestDist = tripBestDist;
+            partRes = graph.getBestTrips(s, d, tripBestStops, filter);
+            if (bestStops > tripBestStops) bestStops = tripBestStops;
             res.insert(res.end(), partRes.begin(), partRes.end());
         }
     }
 
+    vector<vector<string>> joinedRes = {};
     // remove all "best trips" that are too big; see last loop comment
-    resEnd = remove_if(res.begin(), res.end(), [bestDist] (const vector<string>& p) {
-        return (p.size() > bestDist + bestDist-1);
-    });
+    for (const auto& trip : res) {
+        if (trip.size() <= (bestStops+1)*2 + 1) joinedRes.push_back(trip);
+    }
+    res = joinedRes;
 
     // check minimize airline changes filter
     if (filter.type == 3) {
@@ -595,31 +623,30 @@ void Menu::printBestFlights(vector<string> sources, vector<string> destinations,
             airlines.clear();
 
             for (int i = 1; i < path.size(); i+=2) {
-                cout << graph.getAirlineTable().at(graph.airlineHash(path[i])).getCallSign() << endl;
                 airlines.insert(path[i]);
             }
-            cout << minDifAirlines << endl;
             if (airlines.size() < minDifAirlines) minDifAirlines = airlines.size();
         }
 
+        vector<vector<string>> minDifRes = {};
         //remove ones that more different airlines than minDifAirlines
-        resEnd = remove_if(res.begin(), resEnd, [minDifAirlines] (const vector<string>& p) {
-            set<string> al = {};  //airlines in each path
-            for (int i = 1; i < p.size(); i+=2) {
-                al.insert(p[i]);
+        for (const auto& path : res) {
+            set<string> al = {};   //airlines in each path
+            for (int i = 1; i < path.size(); i+=2) {
+                al.insert(path[i]);
             }
-            return al.size() > minDifAirlines;
-        });
-    }
-    /*
-    for (auto it = res.begin(); it != resEnd; it++) {
-        for (int i = it->size() - 1; i >= 1; i-=2) {
-            cout << it->at(i) << " --(" << it->at(i-1) << ")-> ";
+            if (al.size() <= minDifAirlines) minDifRes.push_back(path);
+
         }
-        cout << it->at(0);
-        cout << "\n";
+        res = minDifRes;
+
     }
-    */
+
+
+    if (bestStops == INT_MAX) {
+        cout << endl << "No trip found." << endl;
+        return;
+    }
 
     for (auto path : res) {
         for (int i = path.size() - 1; i >= 1; i-=2) {
@@ -628,9 +655,7 @@ void Menu::printBestFlights(vector<string> sources, vector<string> destinations,
         cout << path[0];
         cout << "\n";
     }
-
-
-    cout << "best trip stops:" << bestDist << '\n';
+    cout << "Best trip stops: " << bestStops << '\n';
 }
 
 filter Menu::readFilterInput(int i) {
@@ -638,8 +663,6 @@ filter Menu::readFilterInput(int i) {
     if (i == 0 || i == 3) return {i, set<string>()};
     string codes;
     cin >> codes;
-
-    std::getline(std::cin, codes);
 
     istringstream ss(codes);
     string code;
