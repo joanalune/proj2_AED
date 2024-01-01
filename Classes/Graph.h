@@ -167,7 +167,14 @@ public:
      * Time complexity: O(1)
      */
     int airlineHash(const string& code);
-
+    /**
+     * Auxiliary dfs function to find the essential airports for flight communication
+     * @param a
+     * @param s
+     * @param l
+     * @param i
+     * @param isRoot
+     */
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
 
     unordered_map<string, unordered_map<string, int>> getNumOutFlightsPerCityAirline();
@@ -179,6 +186,13 @@ public:
 
     int getNumCountriesFliesToByAirport(const string& airportCode);
     int getNumCountriesFliesToByCity(const string& cityName, string& cityCountry);
+    /**
+     * Finds the airports located k stops away from source
+     * @param source
+     * @param k
+     * @return vector of airports located k stops away from source
+     * @details Time complexity: O(n + m * n), n being the number of airports and m being the average number of flights per airport
+     */
     vector<string> nodesAtDistanceBFS(Airport &source, int k);
 
 
