@@ -184,7 +184,6 @@ void Graph::dfs_art(Airport& a, stack<Airport>& s, unordered_set<string>& l, int
     }
 }
 
-//--->Funciona<---//--voos de saida
 unordered_map<string, unordered_map<string, int>> Graph::getNumOutFlightsPerCityAirline(){
     unordered_map<string, unordered_map<string, int>> flightsPerCityAirline;
 
@@ -194,7 +193,6 @@ unordered_map<string, unordered_map<string, int>> Graph::getNumOutFlightsPerCity
 
         for(const auto& flight : flights){
             string airlineCode = flight.getAirlineCode();
-
             flightsPerCityAirline[cityName][airlineCode]++;
         }
     }
@@ -208,16 +206,13 @@ unordered_map<string, unordered_map<string, int>> Graph::getNumInFlightsPerCityA
         const string& cityName = airport.second.getCityName();
         const vector<Flight>& flights = airport.second.getFlights();
 
-
         for(const auto& flight : flights){
             string airlineCode = flight.getAirlineCode();
             string destinationAirportCode = flight.getDestCode();
-
             auto destAirportIt = airportTable.find(airportHash(destinationAirportCode));
+
             if(destAirportIt != airportTable.end()){
                 const string& destCityName = destAirportIt->second.getCityName();
-
-
                 inFlightsPerCityAirline[destCityName][airlineCode]++;
             }
         }
@@ -225,50 +220,44 @@ unordered_map<string, unordered_map<string, int>> Graph::getNumInFlightsPerCityA
     return inFlightsPerCityAirline;
 }
 
+unordered_map<string, unordered_map<string, int>> Graph::getNumOutFlightsPerCity() {
+    unordered_map<string, unordered_map<string, int>> flightsPerCity;
 
-//---> Funciona -- retorna o mesmo numero q o size e q o in
-unordered_map<string, int> Graph::getNumOutFlightsPerCity(){
-    unordered_map<string, int> flightsPerCity;
+    for (const auto& airport : airportTable) {
+        const string& cityName = airport.second.getCityName();
+        const vector<Flight>& flights = airport.second.getFlights();
 
-    for (const auto& city : cityTable){
-        int cityFlights = 0;
-        const auto& airportCodes = city.second.getAirportCodes();
+        for (const auto& flight : flights) {
+            string destCity = airportTable.at(airportHash(flight.getDestCode())).getCityName();
 
-        for (const auto& code : airportCodes) {
-            auto port = airportTable.find(airportHash(code));
-            if (port != airportTable.end()) {
-
-                cityFlights += port->second.getFlights().size();
-                //cityFlights += port->second.getOutDegree();
+            if (cityName != destCity) {
+                flightsPerCity[cityName][destCity]++;
             }
         }
-        flightsPerCity[city.second.getName()] = cityFlights;
     }
     return flightsPerCity;
 }
 
-//---> Funciona -- mas retorna o mesmo numero q o size e out
-unordered_map<string, int> Graph::getNumInFlightsPerCity(){
-    unordered_map<string, int> flightsPerCity;
+unordered_map<string, unordered_map<string, int>> Graph::getNumInFlightsPerCity() {
+    unordered_map<string, unordered_map<string, int>> inFlightsPerCity;
 
-    for(const auto& city : cityTable){
-        int cityFlights = 0;
-        const auto& airportCodes = city.second.getAirportCodes();
+    for (const auto& airport : airportTable) {
+        const string& cityName = airport.second.getCityName();
+        const vector<Flight>& flights = airport.second.getFlights();
 
-        for(const auto& code : airportCodes){
-            auto port = airportTable.find(airportHash(code));
-            if (port != airportTable.end()) {
+        for (const auto& flight : flights) {
+            string destinationAirportCode = flight.getDestCode();
+            auto destAirportIt = airportTable.find(airportHash(destinationAirportCode));
 
-                // cityFlights += port->second.getFlights().size();
-                cityFlights += port->second.getInDegree();
+            if (destAirportIt != airportTable.end()) {
+                const string& destCityName = destAirportIt->second.getCityName();
+                inFlightsPerCity[destCityName][cityName]++;
             }
         }
-        flightsPerCity[city.second.getName()] = cityFlights;
     }
-    return flightsPerCity;
+    return inFlightsPerCity;
 }
 
-//---> Funciona <---//
 unordered_map<string, int> Graph::getNumFlightsPerAirline(){
     unordered_map<string, int> flightsPerAirline;
 
@@ -287,7 +276,6 @@ unordered_map<string, int> Graph::getNumFlightsPerAirline(){
     }
     return flightsPerAirline;
 }
-
 
 int Graph::getNumCountriesFliesToByAirport(const string& airportCode){
     unordered_set<string> countries;
@@ -314,6 +302,7 @@ int Graph::getNumCountriesFliesToByCity(const std::string &cityName, std::string
     for(const auto& city : cityTable){
         if(city.second.getName() == cityName && city.second.getCountry() == cityCountry){
             const vector<string>& airportCodes = city.second.getAirportCodes();
+
             for(const auto& code : airportCodes){
                 auto port = airportTable.find(airportHash(code));
 
@@ -322,6 +311,7 @@ int Graph::getNumCountriesFliesToByCity(const std::string &cityName, std::string
 
                     for(const auto& flight : flights){
                         auto destPort = airportTable.find(airportHash(flight.getDestCode()));
+
                         if(destPort != airportTable.end()){
                             countries.insert(destPort->second.getCountryName());
                         }
@@ -333,7 +323,6 @@ int Graph::getNumCountriesFliesToByCity(const std::string &cityName, std::string
     }
     return countries.size();
 }
-
 
 vector<string> Graph::getAirportCode(string &input, string& mode) {
     vector<string> res;
@@ -399,7 +388,6 @@ vector<string> Graph::getAirportCode(string &input, string& mode) {
     }
 
     return res;
-
 }
 
 vector<pair<string, string>> Graph::getMaximumTrip(int &diameter) { //returns a vector with pairs (source, destination) of graph diameter and places diameter in diameter

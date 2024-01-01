@@ -185,17 +185,17 @@ public:
      */
     unordered_map<string, unordered_map<string, int>> getNumInFlightsPerCityAirline();
     /**
-     * @return a map in the format <airline,nrflights>
+     * @return a map in the format <airline,nrFlights>
      */
     unordered_map<string, int> getNumFlightsPerAirline();
     /**
-     * @return a map in the format <cityName, outgoingFlights>
+     * @return a map in the format <cityName,<cityName,nrFlights (outgoing)>
      */
-    unordered_map<string, int> getNumOutFlightsPerCity();
+    unordered_map<string, unordered_map<string, int>> getNumOutFlightsPerCity();
     /**
-     * @return a map in the format <cityName, incomingFlights>
+     * @return a map in the format <cityName,<cityName,nrFlights (incoming)>
      */
-    unordered_map<string, int> getNumInFlightsPerCity();
+    unordered_map<string, unordered_map<string, int>> getNumInFlightsPerCity();
     /**
      * @param airportCode
      * @return the number of countries an airport flies to

@@ -372,15 +372,16 @@ void Menu::printNrDestinationsAirport() {
 
 }
 
-
 void Menu::printNrFlightsCityAirline(){
     int option;
     cout << "1. Search outgoing flights by city/airline " << endl;
     cout << "2. Search incoming flights by city/airline" << endl;
-    cout << "3. Search flights by airline" << endl;
-    cout << "4. Search flights by city" << endl;
-    cout << "5. Search outgoing flights by airport" << endl;
-    cout << "6. Search incoming flights by airport" << endl;
+    cout << "3. Search outgoing flights by city " << endl;
+    cout << "4. Search incoming flights by city" << endl;
+    cout << "5. Search flights by airline" << endl;
+    cout << "6. Search flights by city" << endl;
+    cout << "7. Search outgoing flights by airport" << endl;
+    cout << "8. Search incoming flights by airport" << endl;
 
     cin >> option;
 
@@ -388,29 +389,69 @@ void Menu::printNrFlightsCityAirline(){
         case 1: {
             unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumOutFlightsPerCityAirline();
             cout << "Number of outgoing flights per City/Airline:" << endl;
+            int total=0;
 
             for(const auto& city : flightsPerCityAirline){
                 cout << "City: " << city.first << endl;
                 for(const auto& airline : city.second){
                     cout << "   Airline: " << airline.first << " -Outgoing flights: " << airline.second << endl;
+                    total += airline.second;
                 }
+                cout << "   Total outgoing flights: " << total << endl;
+                total=0;
             }
             break;
         }
         case 2: {
             unordered_map<string, unordered_map<string, int>> flightsPerCityAirline = graph.getNumInFlightsPerCityAirline();
             cout << "Number of outgoing flights per City/Airline:" << endl;
+            int total=0;
 
             for(const auto& city : flightsPerCityAirline){
                 cout << "City: " << city.first << endl;
                 for(const auto& airline : city.second){
                     cout << "   Airline: " << airline.first << " -Incoming flights: " << airline.second << endl;
+                    total += airline.second;
                 }
+                cout << "   Total incoming flights: " << total << endl;
+                total=0;
             }
 
             break;
         }
         case 3: {
+            unordered_map<string, unordered_map<string, int>> flightsPerCity = graph.getNumOutFlightsPerCity();
+            cout << "Number of outgoing flights per City:" << endl;
+            int total=0;
+
+            for (const auto& city : flightsPerCity) {
+                cout << "City: " << city.first << endl;
+                for (const auto& destination : city.second) {
+                    cout << "   Destination City: " << destination.first << " - Outgoing flights: " << destination.second << endl;
+                    total += destination.second;
+                }
+                cout << "   Total outgoing flights: " << total << endl;
+                total=0;
+            }
+            break;
+        }
+        case 4: {
+            unordered_map<string, unordered_map<string, int>> flightsPerCity = graph.getNumInFlightsPerCity();
+            cout << "Number of incoming flights per City:" << endl;
+            int total=0;
+
+            for (const auto& city : flightsPerCity) {
+                cout << "City: " << city.first << endl;
+                for (const auto& sourceCity : city.second) {
+                    cout << "   Source City: " << sourceCity.first << " - Incoming flights: " << sourceCity.second << endl;
+                    total += sourceCity.second;
+                }
+                cout << "   Total incoming flights: " << total << endl;
+                total=0;
+            }
+            break;
+        }
+        case 5: {
             unordered_map<string, int> flightsPerAirline = graph.getNumFlightsPerAirline();
             cout << "Number of flights per airline:" << endl;
 
@@ -419,20 +460,7 @@ void Menu::printNrFlightsCityAirline(){
             }
             break;
         }
-        case 4: {
-            //--- total de voos por cidade ---
-            //--- funçoes abaixo retornam a mesma coisa --- algum erro c in e out degree
-            //OUT->getNumOutFlightsPerCity();   IN->getNumInFlightsPerCity();
-            unordered_map<string, int> flightsPerCity = graph.getNumOutFlightsPerCity();
-
-            cout << "Number of flights per city:" << endl;
-            for(const auto& pair : flightsPerCity){
-                cout <<"City: "<< pair.first << " -Flights: " << pair.second << endl;
-            }
-            break;
-
-        }
-        case 5: {
+        case 6: {
             cout << "Number of outgoing flights per airport:" << endl;
 
             for(const auto& airport : graph.getAirportTable()){
@@ -441,7 +469,7 @@ void Menu::printNrFlightsCityAirline(){
             }
             break;
         }
-        case 6: {
+        case 7: {
             cout << "Number of incoming flights per airport:" << endl;
 
             for(const auto& airport : graph.getAirportTable()){
