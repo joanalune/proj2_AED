@@ -176,15 +176,36 @@ public:
      * @param isRoot
      */
     void dfs_art(Airport& a, stack<Airport> &s, unordered_set<string> &l, int &i, bool isRoot);
-
+    /**
+     * @return a map in the format <cityName,<airlineCode,nrFlights (outgoing)>>
+     */
     unordered_map<string, unordered_map<string, int>> getNumOutFlightsPerCityAirline();
+    /**
+     * @return a map in the format <cityName,<airlineCode,nrFlights (incoming)>>
+     */
     unordered_map<string, unordered_map<string, int>> getNumInFlightsPerCityAirline();
+    /**
+     * @return a map in the format <airline,nrflights>
+     */
     unordered_map<string, int> getNumFlightsPerAirline();
+    /**
+     * @return a map in the format <cityName, outgoingFlights>
+     */
     unordered_map<string, int> getNumOutFlightsPerCity();
+    /**
+     * @return a map in the format <cityName, incomingFlights>
+     */
     unordered_map<string, int> getNumInFlightsPerCity();
-
-
+    /**
+     * @param airportCode
+     * @return the number of countries an airport flies to
+     */
     int getNumCountriesFliesToByAirport(const string& airportCode);
+    /**
+     * @param cityName
+     * @param cityCountry
+     * @return the number of countries a city flies to
+     */
     int getNumCountriesFliesToByCity(const string& cityName, string& cityCountry);
     /**
      * Finds the airports located k stops away from source
