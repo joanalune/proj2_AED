@@ -510,8 +510,16 @@ void Menu::printTopAirports(){
     cin >> in;
 
     int count =0;
+    Graph non_directed = graph;
 
-    auto x = graph.topAirports();
+    for(auto& a : non_directed.getAirportTable()){
+        for(auto f : a.second.getFlights()){
+            auto find = non_directed.airportHash(f.getDestCode());
+            non_directed.getAirportTable().at(find).addFlight(Flight(a.second.getCode(),f.getAirlineCode()));
+        }
+    }
+
+    auto x = non_directed.topAirports();
 
     if(in >= graph.getAirportTable().size() || in <=0){
         cout << "Invalid input" << endl;

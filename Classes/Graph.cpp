@@ -58,68 +58,8 @@ bool Graph::addFlight(const string& source, const Flight& flight) {
     return true;
 }
 
-vector<string> Graph::dfs() {
-    vector<string> res;
-
-    for (auto& v : airportTable)
-        v.second.setVisited(false);
-
-    for (auto& v : airportTable)
-        if (! v.second.isVisited())
-            dfsVisit(v.second.getCode(), res);
-
-    return res;
-}
-
-void Graph::dfsVisit(string apCode, vector<string> & res) {
-    int apHash = airportHash(apCode);
-    airportTable.at(apHash).setVisited(true);
-
-    res.push_back(apCode);
-
-    for (auto & flight : airportTable.at(apHash).getFlights()) {
-        string dest = flight.getDestCode();
-        if ( ! airportTable.at(airportHash(dest)).isVisited())
-            dfsVisit(dest, res);
-    }
-}
-
-vector<string> Graph::dfs(const string & source) {
-    vector<string> res;
-
-    for (auto& v : airportTable)
-        v.second.setVisited(false);
-
-    dfsVisit(source, res);
-    return res;
-}
 
 
-vector<string> Graph::bfs(const string & source) {
-    vector<string> res;
-    if (airportTable.find(airportHash(source)) == airportTable.end())
-        return res;
-
-    queue<string> q;
-    for (auto& v : airportTable)
-        v.second.setVisited(false);
-
-    q.push(source);
-    airportTable.at(airportHash(source)).setVisited(true);
-    while (!q.empty()) {
-        auto v = q.front();
-        q.pop();
-        res.push_back(v);
-        for (auto & e : airportTable.at(airportHash(v)).getFlights()) {
-            string dest = e.getDestCode();
-            if ( ! airportTable.at(airportHash(dest)).isVisited()) {
-                q.push(dest);
-                airportTable.at(airportHash(dest)).setVisited(true);
-            }
-        }
-    }
-    return res;
-}
 
 vector<string> Graph::farthestAirportsFrom(const string& source, int& stops) {
     vector<string> farthest;
@@ -185,7 +125,6 @@ unordered_map<int, City> Graph::getCityTable() const {
 }
 
 set<Airport> Graph::topAirports() {
-    int count = 0;
 
     set<Airport> orderedAirports;
 

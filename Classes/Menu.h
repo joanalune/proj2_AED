@@ -59,8 +59,9 @@ public:
      */
     void printNrDestinationsAirport();
     /**
-     * Prints the top X airports with the most flights (outgoing + incoming), calls the graph functions topAirports(), getInDegree() and getOutDegree()
-     * @details Time Complexity: O(n) + O(i * log i), n being the number of airports the user wants printed, i being the size of the graph's airport table
+     * Creates a non-directed version of the existing graph, prints the top X airports with the most flights (outgoing + incoming), calls the graph functions topAirports(), getInDegree() and getOutDegree()
+     * @details Time Complexity: O(n) + O(i * log i) + O(j)*O(k), n being the number of airports the user wants printed, i being the size of the graph's airport table,
+     * j being the size of the airport table and k being the size of the flights vector in each airport
      */
     void printTopAirports();
     /**
