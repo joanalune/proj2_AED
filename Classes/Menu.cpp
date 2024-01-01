@@ -70,7 +70,7 @@ void Menu::statisticsMenuView() {
     cout    << "What would you like to know?" << endl;
     cout    << "1. Global number of airports/flights"<< endl;
     cout    << "2. Number of flights out of specified airport" << endl; //also print nr of airlines
-    cout    << "3. Number of flights per city/airline" << endl;
+    cout    << "3. Number of flights per city/airline or airport" << endl;
     cout    << "4. Number of different countries a specified airport/city flies to" << endl;
     cout    << "5. Number of reachable destinations available for specified airport in a maximum number of X stops." << endl; //destinations being airports, cities or countries. needs to have options to select max nr of stops
     cout    << "6. Flight trips with the greatest number of stops" << endl;
@@ -379,9 +379,8 @@ void Menu::printNrFlightsCityAirline(){
     cout << "3. Search outgoing flights by city " << endl;
     cout << "4. Search incoming flights by city" << endl;
     cout << "5. Search flights by airline" << endl;
-    cout << "6. Search flights by city" << endl;
-    cout << "7. Search outgoing flights by airport" << endl;
-    cout << "8. Search incoming flights by airport" << endl;
+    cout << "6. Search outgoing flights by airport" << endl;
+    cout << "7. Search incoming flights by airport" << endl;
 
     cin >> option;
 
