@@ -42,18 +42,19 @@ public:
      */
     int getNumFlights() const;
     /**
-     * ?????????????
-     * @param diameter
+     * Calculates the trip between airports that's the farthest out of all the best trip possibilities (least amount of stops)
+     * i.e. the diameter of the graph
+     * @param diameter (return attribute)
      * @return a vector with pairs (source, destination) of graph diameter and places diameter in diameter
-     * @details Time complexity:
+     * @details Time complexity: O(n*(n+k)) where n is the number of airports in the graph and k is the number of flights in the graph
      */
     vector<pair<string, string>> getMaximumTrip(int &diameter);
     /**
-     * ??????????????????'
+     * Uses bfs search to find the farthest airports from a given source
      * @param source
      * @param stops
      * @return a vector with the farthest airports from given source
-     * @details Time complexity:
+     * @details Time complexity: O(n+k), where n is the number of airports in the graph and k is the number of flights in the graph
      */
     vector<string> farthestAirportsFrom(const string& source, int &stops);
     /**
