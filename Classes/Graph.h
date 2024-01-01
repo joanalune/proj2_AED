@@ -18,7 +18,7 @@
 using namespace std;
 
 struct filter {
-    int type;         // 0 - no filter; 1 - blacklist; 2 - whitelist; 3 - minimize airline changes. 1 and 2 are handled in getBestTrips (Graph class), 3 is handled in printBestFlights (Menu class)
+    int type;         // 0 - no filter; 1 - whitelist; 2 - blacklist; 3 - minimize airline changes. 1 and 2 are handled in getBestTrips (Graph class), 3 is handled in printBestFlights (Menu class)
     set<string> codes;
 };
 

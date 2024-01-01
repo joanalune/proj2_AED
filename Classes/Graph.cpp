@@ -512,11 +512,11 @@ vector<vector<string>> Graph::getBestTrips(string source, string destination, in
 
                 //check airline blacklist/whitelist
                 switch (filter.type) {
-                    case 1:
+                    case 2:
                         //blacklist
                         if (filter.codes.find(e.getAirlineCode()) != filter.codes.end()) continue;
                         break;
-                    case 2:
+                    case 1:
                         //whitelist
                         if (filter.codes.find(e.getAirlineCode()) == filter.codes.end()) continue;
                         break;
