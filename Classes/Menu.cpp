@@ -555,6 +555,7 @@ void Menu::printTopAirports(){
 }
 
 void Menu::printGreatestNumberStops() {
+    cout << "Processing data... it might take a while! (,,>﹏<,,)" << endl;
     int diameter;
     vector<pair<string, string>> diameterTrips = graph.getMaximumTrip(diameter);
 
@@ -562,7 +563,7 @@ void Menu::printGreatestNumberStops() {
     for (auto pair : diameterTrips) {
         string s = graph.getAirportTable().at(graph.airportHash(pair.first)).getCode();
         string d = graph.getAirportTable().at(graph.airportHash(pair.second)).getCode();
-        cout << '\n' << s << "  TO  " << d;
+        cout << '\n' << s << "  to  " << d;
     }
     cout << "\nNumber of stops:  " << diameter << '\n';
 }
