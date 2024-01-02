@@ -209,23 +209,23 @@ int Menu::runBestFlightsMenu() {
 
         switch(option2){
             case 1:
-                cout << "Please insert the source airport code:" << endl;
+                cout << "Please insert the destiny airport code:" << endl;
                 cin >> dest;
                 mode = "code";
                 break;
 
             case 2:
-                cout << "Please insert the source airport name:" << endl;
+                cout << "Please insert the destiny airport name:" << endl;
                 getline(std::cin >> std::ws, dest);
                 mode = "name";
                 break;
             case 3:
-                cout << "Please insert the source city and country in the format city,country:" << endl;
+                cout << "Please insert the destiny city and country in the format city,country:" << endl;
                 getline(std::cin >> std::ws, dest);
                 mode = "city";
                 break;
             case 4:
-                cout << "Please insert the source coordinates in the format latitude,longitude:" << endl;
+                cout << "Please insert the destiny coordinates in the format latitude,longitude:" << endl;
                 cin >> dest;
                 mode = "coord";
                 break;
@@ -323,7 +323,8 @@ void Menu::printNrAirportsFlights() {
             break;
         default:
             cout << "Invalid input" << endl;
-        }
+            break;
+    }
 
 }
 
