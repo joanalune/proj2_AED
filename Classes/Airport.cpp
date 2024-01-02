@@ -103,7 +103,7 @@ int Airport::getNrDifferentAirlines() const {
 }
 
 bool Airport::operator<(Airport b) const{
-    return this->flights.size() > b.flights.size();
+    return this->flights.size()+this->getInDegree() > b.flights.size() + b.getInDegree();
 }
 
 string Airport::getLastAirport() const {

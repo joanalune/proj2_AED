@@ -536,16 +536,8 @@ void Menu::printTopAirports(){
     cin >> in;
 
     int count =0;
-    Graph non_directed = graph;
 
-    for(auto& a : non_directed.getAirportTable()){
-        for(auto f : a.second.getFlights()){
-            auto find = non_directed.airportHash(f.getDestCode());
-            non_directed.getAirportTable().at(find).addFlight(Flight(a.second.getCode(),f.getAirlineCode()));
-        }
-    }
-
-    auto x = non_directed.topAirports();
+    auto x = graph.topAirports();
 
     if(in >= graph.getAirportTable().size() || in <=0){
         cout << "Invalid input" << endl;
@@ -576,14 +568,14 @@ void Menu::printGreatestNumberStops() {
 
 void Menu::printEssentialAirports(){
     unordered_set<string> res;
+
     res = graph.essentialAirports();
 
-    cout << "The essential airports "<< '(' << res.size() <<')'<<" are: " << endl;
-
     for(auto a : res){
-
         cout << a<< endl;
     }
+
+    cout << "There are " << res.size() <<" essential airports"<< endl;
 }
 
 void Menu::printBestFlights(vector<string> sources, vector<string> destinations, filter filter) {
