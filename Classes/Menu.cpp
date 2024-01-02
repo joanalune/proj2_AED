@@ -64,7 +64,7 @@ void Menu::statisticsMenuView() {
     cout << endl;
     cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
     cout    << "  Air Travel Flight Management System   " << endl;
-    cout    << "          Network Statistics Menu       " << endl;
+    cout    << "        Network Statistics Menu         " << endl;
     cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
     cout    << endl;
     cout    << "What would you like to know?" << endl;
@@ -130,7 +130,7 @@ void Menu::bestFlightsMenuView() {
     cout    << endl;
     cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
     cout    << "  Air Travel Flight Management System   " << endl;
-    cout    << "            Best Flight Option          " << endl;
+    cout    << "           Best Flight Option           " << endl;
     cout    << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
     cout    << endl;
     cout    << "Please insert your source location. Which format would you like to use?" << endl;
